@@ -3,7 +3,10 @@
 #bbp-dialog:not([open]) { display: none; }
 #bbp-dialog[data-gif="true"] { width:min(800px,calc(100vw - 24px),calc((100dvh - 190px) * 4 / 3)); min-width:min(280px,calc(100vw - 24px)); }
 #bbp-dialog[data-gif="true"] .bbp-media { aspect-ratio:4/3; background:#fff; }
-#bbp-dialog .bbp-media-link { display:block; width:100%; height:100%; }
+#bbp-dialog .bbp-media-link { display:block; position:relative; width:100%; height:100%; }
+#bbp-dialog[data-gif="true"] .bbp-media img { transition:opacity .6s ease-in-out; }
+#bbp-dialog .bbp-gif-next { position:absolute; inset:0; opacity:0; }
+#bbp-dialog[data-gif="true"] .bbp-title { flex:1; }
 #bbp-dialog .bbp-media-link:focus-visible { outline:3px solid #226b68; outline-offset:-4px; }
 #bbp-dialog::backdrop { background: rgb(28 25 29 / 65%); backdrop-filter: blur(3px); }
 #bbp-dialog *, #bbp-dialog *::before, #bbp-dialog *::after { box-sizing: border-box; letter-spacing: 0; }
@@ -55,6 +58,7 @@
   #bbp-dialog .bbp-card span { font-size: 12px; }
 }
 @media (prefers-reduced-motion: reduce) { #bbp-dialog .bbp-card { transition: none; } }
+@media (prefers-reduced-motion: reduce) { #bbp-dialog[data-gif="true"] .bbp-media img { transition:none; } }
 
 </style>
 <script>
@@ -64,7 +68,7 @@
   const config = { mode: 'top', autoOpen: false, gif: "" };
   const base = 'https://cdn.beautyblossomth.kr/popup-tests/2026-09-22/glass-v1/';
   const items = [
-    { title: '가을 진료 안내', file: 'autumn.png' },
+    { title: config.gif ? '이벤트' : '가을 진료 안내', file: 'autumn.png' },
     { title: '첫 방문 상담', file: 'welcome.png' },
     { title: '리프팅 상담', file: 'lifting.png' },
     { title: '환절기 피부 상담', file: 'skin.png' }
@@ -72,6 +76,9 @@
   const storageKey = 'bb-popup:20260922:v1:hideUntil' + (config.gif ? ':' + config.gif.split('/').pop() : '');
   let dialog, media, picture, error, fan, tabs, viewNav, title, back, mediaLink;
   let active = 0, mode = config.mode, savedFocus, overflow, touchX = null, locked = false;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const gifSources = config.gif ? [config.gif, 'https://cdn.imweb.me/upload/S2025011326b2ce90ae445/' + (config.gif.endsWith('8832d583bac5c.gif') ? 'd320e21e3b63f.gif' : '8832d583bac5c.gif')] : [];
+  let gifPicture, gifControl, gifTimer, gifIndex=0, gifPaused=reduced.matches, dragCue;
   const tabButtons = [];
   function el(tag, className, text) {
     const node = document.createElement(tag);
@@ -102,18 +109,35 @@
     document.documentElement.style.overflow = overflow;
     if (savedFocus && savedFocus.isConnected) savedFocus.focus({ preventScroll: true });
   }
-  function close() { if (dialog && dialog.open) { dialog.close(); restore(); } }
+  function close() { clearTimeout(gifTimer);dragCue?.stop(); if (dialog && dialog.open) { dialog.close(); restore(); } }
+  function syncGif() {
+    if (!config.gif) return;
+    picture.style.opacity=active===0&&gifIndex===1?'0':'1';
+    gifPicture.style.opacity=gifIndex===1?'1':'0';gifPicture.hidden=active!==0;
+    gifControl.hidden=active!==0;
+    gifControl.textContent=gifPaused?'▶':'Ⅱ';
+    gifControl.setAttribute('aria-label',gifPaused?'이미지 자동 전환 재생':'이미지 자동 전환 일시정지');
+    gifControl.title=gifControl.getAttribute('aria-label');gifControl.setAttribute('aria-pressed',String(gifPaused));
+    if(active===0)mediaLink.href=gifSources[gifIndex].endsWith('8832d583bac5c.gif')
+      ? 'https://beautyblossom.kr/20/?bmode=view&idx=173288345&t=board'
+      : 'https://beautyblossom.kr/22/?bmode=view&idx=173371363&t=board';
+    else mediaLink.removeAttribute('href');
+  }
+  function scheduleGif() {
+    clearTimeout(gifTimer);
+    if(!config.gif||!dialog?.open||active!==0||gifPaused||document.hidden)return;
+    gifTimer=setTimeout(()=>{
+      if(picture.complete&&picture.naturalWidth&&gifPicture.complete&&gifPicture.naturalWidth){gifIndex=1-gifIndex;syncGif();}
+      scheduleGif();
+    },1800);
+  }
   function select(index, focusTab) {
     active = (index + items.length) % items.length;
     picture.alt = '뷰티블라썸의원 ' + items[active].title + ' 안내 이미지';
     error.hidden = true;
     picture.src = active === 0 && config.gif ? config.gif : base + items[active].file;
-    if (mediaLink) {
-      if (active === 0) mediaLink.href = config.gif.endsWith('8832d583bac5c.gif')
-        ? 'https://beautyblossom.kr/20/?bmode=view&idx=173288345&t=board'
-        : 'https://beautyblossom.kr/22/?bmode=view&idx=173371363&t=board';
-      else mediaLink.removeAttribute('href');
-    }
+    gifIndex=0;syncGif();scheduleGif();
+    if(active===0&&dialog.open)dragCue?.play();else dragCue?.stop();
     tabButtons.forEach((tab, i) => {
       tab.setAttribute('aria-selected', String(i === active));
       tab.tabIndex = i === active ? 0 : -1;
@@ -142,6 +166,10 @@
     back = button('←', 'bbp-icon', collapse, '카드 목록으로 돌아가기'); back.hidden = true;
     title = el('h2', 'bbp-title', '뷰티블라썸 소식'); title.id = 'bbp-title';
     header.append(back, title, button('×', 'bbp-icon', close, '팝업 닫기'));
+    if(config.gif){
+      gifControl=button('Ⅱ','bbp-icon',()=>{gifPaused=!gifPaused;syncGif();scheduleGif();},'이미지 자동 전환 일시정지');
+      title.after(gifControl);
+    }
     tabs = el('div', 'bbp-tabs'); tabs.setAttribute('role', 'tablist'); tabs.setAttribute('aria-label', '뷰티블라썸 소식');
     items.forEach((item, i) => {
       const tab = button(item.title, 'bbp-tab', () => select(i));
@@ -163,7 +191,9 @@
     picture.addEventListener('load', () => { error.hidden = true; });
     if (config.gif) {
       mediaLink = el('a', 'bbp-media-link'); mediaLink.target = '_blank'; mediaLink.rel = 'noopener';
-      mediaLink.append(picture); media.append(mediaLink, error);
+      gifPicture=el('img','bbp-gif-next');gifPicture.src=gifSources[1];gifPicture.alt='뷰티블라썸의원 이벤트 안내 이미지';gifPicture.width=800;gifPicture.height=600;
+      mediaLink.append(picture,gifPicture); media.append(mediaLink, error);
+      dragCue=window.BBDragCue(media);
     } else media.append(picture, error);
     media.addEventListener('touchstart', event => { touchX = event.touches.length === 1 ? { x: event.touches[0].clientX, y: event.touches[0].clientY } : null; }, { passive: true });
     media.addEventListener('touchend', event => {
@@ -199,6 +229,8 @@
     });
     dialog.addEventListener('cancel', event => { event.preventDefault(); close(); });
     dialog.addEventListener('close', restore);
+    document.addEventListener('visibilitychange',scheduleGif);
+    reduced.addEventListener('change',()=>{if(config.gif&&reduced.matches){gifPaused=true;syncGif();scheduleGif();}});
     document.body.append(dialog);
   }
   function open(nextMode, respectSuppression) {
@@ -215,6 +247,8 @@
       overflow = document.documentElement.style.overflow;
       dialog.showModal(); locked = true; document.documentElement.style.overflow = 'hidden';
     }
+    scheduleGif();
+    if(active===0)dragCue?.play();
   }
   window.BBPopup = Object.freeze({ open, close });
   if (config.autoOpen) open(config.mode, true);
@@ -234,7 +268,7 @@
 #bbe h2 { font-size:16px; line-height:1.4; font-weight:700; margin:0; padding:0; flex:1; color:inherit; }
 #bbe .bbe-icon { width:44px; height:44px; flex:0 0 44px; display:grid; place-items:center; font:24px/1 sans-serif; }
 #bbe .bbe-icon[aria-pressed="true"] { color:#246c6a; }
-#bbe .bbe-stage { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; padding:8px 14px 14px; }
+#bbe .bbe-stage { position:relative; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; padding:8px 14px 14px; }
 #bbe .bbe-card { min-width:0; display:block; position:relative; border-radius:4px; padding:0; background:#fff; }
 #bbe .bbe-image { position:relative; aspect-ratio:4/5; width:100%; overflow:hidden; border-radius:4px; background:#eeeeef; }
 #bbe .bbe-image img { position:absolute; inset:0; width:100%; height:100%; max-width:none; object-fit:contain; display:block; margin:0; opacity:0; transition:opacity .6s ease-in-out; }
@@ -242,8 +276,12 @@
 #bbe .bbe-card.bbe-empty { visibility:hidden; }
 #bbe .bbe-caption { display:block; padding:10px 5px 4px; height:46px; font-size:12px; line-height:16px; overflow:hidden; color:#58545a; }
 #bbe .bbe-caption span { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; overflow-wrap:anywhere; }
-#bbe .bbe-tabs { display:flex; min-height:48px; background:#fff; border-top:1px solid #dedede; }
-#bbe .bbe-tab { position:relative; min-width:56px; flex:1; height:48px; font-size:15px; font-weight:700; white-space:nowrap; }
+#bbe .bbe-static { position:relative; aspect-ratio:809/477; background:#fff; }
+#bbe .bbe-static img { display:block; width:100%; height:100%; object-fit:contain; margin:0; }
+#bbe .bbe-static-error { position:absolute; inset:0; display:grid; place-items:center; padding:24px; background:#fff; text-align:center; }
+#bbe .bbe-tabs { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); min-height:54px; background:#fff; border-top:1px solid #dedede; }
+#bbe .bbe-tab { position:relative; min-width:0; min-height:54px; padding:10px 6px; font-size:14px; font-weight:700; border-right:1px solid #dedede; word-break:keep-all; overflow-wrap:anywhere; }
+#bbe .bbe-tab:last-child { border-right:0; }
 #bbe .bbe-tab[aria-selected="true"] { background:#246c6a; color:#fff; }
 #bbe .bbe-foot { display:grid; grid-template-columns:1fr 1fr; border-top:1px solid #dedede; }
 #bbe .bbe-foot button { min-height:46px; padding:10px; font-size:13px; }
@@ -258,12 +296,49 @@
  #bbe .bbe-caption { height:42px; }
  #bbe .bbe-head { padding-left:14px; gap:2px; }
  #bbe h2 { font-size:14px; }
- #bbe .bbe-tab { min-width:44px; }
+ #bbe .bbe-tab { font-size:12px; padding:8px 4px; }
 }
 @media(prefers-reduced-motion:reduce) { #bbe .bbe-image img { transition:none; } }
 
+.bb-dragcue { position:absolute; inset:0; z-index:5; pointer-events:none!important; overflow:hidden; opacity:0; }
+.bb-dragcue * { box-sizing:border-box; pointer-events:none!important; }
+.bb-dragcue-frame { position:absolute; inset:16px; border:2px solid #8bddf9; transform-origin:top left; }
+.bb-dragcue-handle { position:absolute; width:12px; height:12px; background:#9ce3fc; border:1px solid #e7faff; }
+.bb-dragcue-handle.tl { top:-7px; left:-7px; }
+.bb-dragcue-handle.tr { top:-7px; right:-7px; }
+.bb-dragcue-handle.bl { bottom:-7px; left:-7px; }
+.bb-dragcue-handle.br { bottom:-7px; right:-7px; }
+.bb-dragcue-cursor { position:absolute; bottom:-25px; right:-25px; width:32px; height:32px; filter:drop-shadow(0 2px 2px #0003); }
+.bb-dragcue[data-playing="true"] { animation:bb-cue-visibility 3.2s ease both; }
+.bb-dragcue[data-playing="true"] .bb-dragcue-frame { animation:bb-cue-drag 3.2s ease-in-out both; }
+.bb-dragcue[data-playing="true"] .bb-dragcue-cursor { animation:bb-cue-cursor 3.2s ease-in-out both; }
+@keyframes bb-cue-visibility { 0%,100%{opacity:0} 12%,82%{opacity:1} }
+@keyframes bb-cue-drag { 0%,28%,80%,100%{transform:scale(.96,.94)} 52%,65%{transform:scale(1,1)} }
+@keyframes bb-cue-cursor { 0%,12%{transform:translate(34px,26px);opacity:0} 28%,75%{transform:translate(0,0);opacity:1} 100%{transform:translate(26px,22px);opacity:0} }
+@media(prefers-reduced-motion:reduce) { .bb-dragcue { display:none!important; } }
+
 </style>
 <script>
+(function(){
+  'use strict';
+  if(window.BBDragCue)return;
+  window.BBDragCue=function(target){
+    const cue=document.createElement('div');cue.className='bb-dragcue';cue.setAttribute('aria-hidden','true');
+    const frame=document.createElement('div');frame.className='bb-dragcue-frame';
+    for(const corner of ['tl','tr','bl','br']){const handle=document.createElement('i');handle.className='bb-dragcue-handle '+corner;frame.append(handle);}
+    const cursor=document.createElement('span');cursor.className='bb-dragcue-cursor';
+    // Lucide MousePointer2, decorative and never an interactive target.
+    cursor.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="white" stroke="#252b31" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m4 4 7.07 17 2.51-7.39L21 11.07 4 4z"/></svg>';
+    frame.append(cursor);cue.append(frame);target.append(cue);
+    const reduced=matchMedia('(prefers-reduced-motion:reduce)');let raf;
+    function stop(){cancelAnimationFrame(raf);cue.removeAttribute('data-playing');}
+    function play(){stop();if(reduced.matches)return;raf=requestAnimationFrame(()=>{raf=requestAnimationFrame(()=>{cue.dataset.playing='true';});});}
+    cue.addEventListener('animationend',e=>{if(e.animationName==='bb-cue-visibility')stop();});
+    reduced.addEventListener('change',()=>{if(reduced.matches)stop();});
+    return Object.freeze({play,stop});
+  };
+}());
+
 (function () {
   'use strict';
   if (window.BBEvents) return;
@@ -271,9 +346,17 @@
   const SOURCE = 'https://beautyblossom.kr/22';
   const KEY = 'bb-events-v2-hideUntil';
   const INTERVAL = 1800;
+  const sections = [
+    {title:'이벤트'},
+    {title:'첫 방문 상담',file:'welcome.png'},
+    {title:'리프팅 상담',file:'lifting.png'},
+    {title:'환절기 피부 상담',file:'skin.png'}
+  ];
+  const imageBase='https://cdn.beautyblossomth.kr/popup-tests/2026-09-22/glass-v1/';
   const mobile = matchMedia('(max-width:700px)'), reduced = matchMedia('(prefers-reduced-motion:reduce)');
   let dialog, stage, tabs, state, pauseButton, timer, refreshTimer, request;
   let items=[], cards=[], index=0, generation=0, paused=reduced.matches, busy=false, focusBefore, overflow, locked=false;
+  let activeTab=0, panels=[], dragCue, cuePending=false;
   const preloads = new Map();
   const size = () => mobile.matches ? 1 : 3;
   const pageCount = () => Math.ceil(items.length / size());
@@ -289,16 +372,39 @@
   function stop() { clearTimeout(timer); timer=null; }
   function schedule() {
     stop();
-    if(dialog?.open && !paused && !document.hidden && pageCount()>1 && !busy) timer=setTimeout(()=>show(index+1),INTERVAL);
+    if(dialog?.open && activeTab===0 && !paused && !document.hidden && pageCount()>1 && !busy) timer=setTimeout(()=>show(index+1),INTERVAL);
   }
   function syncPause() { pauseButton.textContent=paused?'▶':'Ⅱ'; pauseButton.setAttribute('aria-pressed',String(paused)); pauseButton.setAttribute('aria-label',paused?'자동 전환 재생':'자동 전환 일시정지'); pauseButton.title=pauseButton.getAttribute('aria-label'); }
   function pause(value) { paused=value; syncPause(); schedule(); }
+  function syncView() {
+    stage.hidden=activeTab!==0||!items.length;
+    state.hidden=activeTab!==0||items.length>0;
+    pauseButton.hidden=activeTab!==0;
+    panels.forEach((panel,i)=>{panel.hidden=activeTab!==i+1;});
+    [...tabs.children].forEach((tab,i)=>{tab.setAttribute('aria-selected',String(i===activeTab));tab.tabIndex=i===activeTab?0:-1;});
+  }
+  function selectTab(next,focus=false) {
+    stop();generation++;busy=false;activeTab=(next+sections.length)%sections.length;
+    syncView();
+    if(activeTab===0){cuePending=true;if(items.length)show(index,true);}else{cuePending=false;dragCue.stop();}
+    if(focus)tabs.children[activeTab].focus();
+  }
   function renderTabs() {
     tabs.replaceChildren();
-    const tab=button('가을 진료안내','bbe-tab','',()=>{});
-    tab.id='bbe-tab-autumn';tab.setAttribute('role','tab');
-    tab.setAttribute('aria-controls','bbe-stage');tab.setAttribute('aria-selected','true');
-    tabs.append(tab);
+    sections.forEach((section,i)=>{
+      const tab=button(section.title,'bbe-tab','',()=>selectTab(i));
+      tab.id='bbe-tab-'+i;tab.setAttribute('role','tab');
+      tab.setAttribute('aria-controls',i===0?'bbe-stage':'bbe-panel-'+i);
+      tab.addEventListener('keydown',e=>{
+        let next;
+        if(e.key==='ArrowRight')next=i+1;
+        if(e.key==='ArrowLeft')next=i-1;
+        if(e.key==='Home')next=0;
+        if(e.key==='End')next=sections.length-1;
+        if(next!==undefined){e.preventDefault();selectTab(next,true);}
+      });
+      tabs.append(tab);
+    });
   }
   async function show(next, immediate=false) {
     stop(); if(!items.length)return;
@@ -318,16 +424,17 @@
       incoming.style.transition=immediate?'none':''; outgoing.style.transition=''; incoming.classList.add('bbe-shown'); outgoing.classList.remove('bbe-shown');card.dataset.layer=String(nextLayer);
       card.querySelector('.bbe-caption span').textContent=ready[i]?item.title:'이미지를 불러오지 못했습니다. 상세 보기';
     });
-    stage.setAttribute('aria-labelledby','bbe-tab-autumn');
+    stage.setAttribute('aria-labelledby','bbe-tab-0');
     busy=false; schedule();
+    if(cuePending&&activeTab===0){cuePending=false;dragCue.play();}
     const start=((index+1)%pageCount())*size(); items.slice(start,start+size()).forEach(item=>imageOK(item.image));
   }
   function restore() { if(!locked||dialog.open)return;locked=false;document.documentElement.style.overflow=overflow;if(focusBefore?.isConnected)focusBefore.focus({preventScroll:true}); }
-  function close() { if(!dialog?.open)return;stop();clearInterval(refreshTimer);generation++;request?.abort();request=null;busy=false;dialog.close();restore(); }
+  function close() { if(!dialog?.open)return;stop();dragCue.stop();clearInterval(refreshTimer);generation++;request?.abort();request=null;busy=false;dialog.close();restore(); }
   function hideToday() { const date=new Date();date.setHours(24,0,0,0);try{localStorage.setItem(KEY,String(+date));}catch(_){}close(); }
   function build() {
     dialog=node('dialog');dialog.id='bbe';dialog.setAttribute('aria-labelledby','bbe-title');
-    const head=node('header','bbe-head'), title=node('h2','','뷰티블라썸 이벤트');title.id='bbe-title';
+    const head=node('header','bbe-head'), title=node('h2','','뷰티블라썸 소식');title.id='bbe-title';
     pauseButton=button('Ⅱ','bbe-icon','자동 전환 일시정지',()=>pause(!paused));
     head.append(title,pauseButton,button('×','bbe-icon','팝업 닫기',close));
     state=node('div','bbe-state','이벤트를 불러오는 중입니다.');state.setAttribute('role','status');
@@ -337,8 +444,17 @@
       frame.append(node('img'),node('img'));caption.append(node('span'));card.append(frame,caption);card.addEventListener('click',()=>pause(true));stage.append(card);cards.push(card);
     }
     tabs=node('div','bbe-tabs');tabs.setAttribute('role','tablist');tabs.setAttribute('aria-label','진료 안내');
+    dragCue=window.BBDragCue(stage);
+    renderTabs();
+    panels=sections.slice(1).map((section,i)=>{
+      const panel=node('div','bbe-static'),img=node('img'),error=node('div','bbe-static-error','이미지를 불러오지 못했습니다. 잠시 후 다시 열어 주세요.');
+      panel.id='bbe-panel-'+(i+1);panel.setAttribute('role','tabpanel');panel.setAttribute('aria-labelledby','bbe-tab-'+(i+1));panel.hidden=true;
+      img.alt='뷰티블라썸의원 '+section.title;img.width=809;img.height=477;error.hidden=true;
+      img.addEventListener('error',()=>{error.hidden=false;});img.addEventListener('load',()=>{error.hidden=true;});img.src=imageBase+section.file;
+      panel.append(img,error);return panel;
+    });
     const foot=node('div','bbe-foot');foot.append(button('오늘 하루 보지 않기','','',hideToday),button('닫기','','',close));
-    dialog.append(head,state,stage,tabs,foot);document.body.append(dialog);
+    dialog.append(head,state,stage,...panels,tabs,foot);document.body.append(dialog);
     dialog.addEventListener('cancel',e=>{e.preventDefault();close();});dialog.addEventListener('close',restore);
     dialog.addEventListener('keydown',e=>{
       if(e.key!=='Tab')return;
@@ -347,7 +463,7 @@
       if(!e.shiftKey&&document.activeElement===els.at(-1)){e.preventDefault();els[0].focus();}
     });
     dialog.addEventListener('click',e=>{if(e.target!==dialog)return;const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)close();});
-    mobile.addEventListener('change',()=>{if(!dialog.open||!items.length)return;generation++;busy=false;index=0;renderTabs();show(0,true);});
+    mobile.addEventListener('change',()=>{if(!dialog.open||!items.length)return;generation++;busy=false;index=0;if(activeTab===0)show(0,true);});
     reduced.addEventListener('change',()=>{if(reduced.matches)pause(true);});
     document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();else schedule();});
     syncPause();
@@ -365,11 +481,11 @@
       if(!next.length||data.truncated||next.length!==data.items.length)throw new Error('invalid_feed');
       if(!dialog.open||request!==controller)return;
       const changed=JSON.stringify(items)!==JSON.stringify(next);
-      items=next;state.hidden=true;stage.hidden=false;tabs.hidden=false;
-      if(changed){preloads.clear();renderTabs();await show(0,true);}else if(!busy)schedule();
+      items=next;syncView();
+      if(changed){preloads.clear();index=0;if(activeTab===0)await show(0,true);}else if(!busy)schedule();
     } catch(_) {
       if(!dialog.open||request!==controller)return;stop();generation++;busy=false;items=[];
-      stage.hidden=true;tabs.hidden=true;state.hidden=false;
+      syncView();
       state.textContent='이벤트를 불러오지 못했습니다.';
       const a=node('a','','이벤트 페이지 열기');a.href=SOURCE;a.target='_blank';a.rel='noopener';
       state.append(a,button('다시 시도','','',()=>refresh()));
@@ -381,8 +497,8 @@
     if(!dialog)build();if(dialog.open)return;
     focusBefore=document.activeElement;overflow=document.documentElement.style.overflow;
     dialog.showModal();locked=true;document.documentElement.style.overflow='hidden';
-    stage.hidden=true;tabs.hidden=true;state.hidden=false;state.textContent='이벤트를 불러오는 중입니다.';
-    items=[];refresh();clearInterval(refreshTimer);refreshTimer=setInterval(()=>{if(!document.hidden)refresh();},60000);
+    state.textContent='이벤트를 불러오는 중입니다.';
+    items=[];index=0;activeTab=0;cuePending=true;syncView();refresh();clearInterval(refreshTimer);refreshTimer=setInterval(()=>{if(!document.hidden)refresh();},60000);
   }
   window.BBEvents=Object.freeze({open,close});
   if (true) open(true);
