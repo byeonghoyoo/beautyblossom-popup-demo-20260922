@@ -1,0 +1,209 @@
+<style>
+#bbp-dialog { all: initial; box-sizing: border-box; position: fixed; inset: 0; margin: auto; padding: 0; border: 0; width: min(809px, calc(100vw - 32px)); height: fit-content; max-height: calc(100dvh - 32px); overflow: auto; color: #29252b; background: #fff; font: 15px/1.5 "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; letter-spacing: 0; box-shadow: 0 24px 80px #0004; }
+#bbp-dialog:not([open]) { display: none; }
+#bbp-dialog::backdrop { background: rgb(28 25 29 / 65%); backdrop-filter: blur(3px); }
+#bbp-dialog *, #bbp-dialog *::before, #bbp-dialog *::after { box-sizing: border-box; letter-spacing: 0; }
+#bbp-dialog [hidden] { display: none !important; }
+#bbp-dialog button { appearance: none; font: inherit; border: 0; border-radius: 0; margin: 0; cursor: pointer; color: inherit; background: transparent; padding: 0; text-align: center; box-shadow: none; white-space: normal; }
+#bbp-dialog button:focus-visible { outline: 3px solid #226b68; outline-offset: -4px; }
+#bbp-dialog .bbp-header { min-height: 52px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 4px 12px 4px 20px; background: #fff; }
+#bbp-dialog .bbp-title { font-size: 16px; font-weight: 700; margin: 0; padding: 0; color: inherit; line-height: 1.4; }
+#bbp-dialog .bbp-icon { flex: 0 0 44px; width: 44px; height: 44px; font: 26px/1 sans-serif; }
+#bbp-dialog .bbp-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); background: #fff; }
+#bbp-dialog .bbp-tab { min-height: 54px; font-size: 14px; font-weight: 700; padding: 10px 6px; border-right: 1px solid #ddd; border-top: 1px solid #eee; word-break: keep-all; overflow-wrap: anywhere; }
+#bbp-dialog .bbp-tab:last-child { border-right: 0; }
+#bbp-dialog .bbp-tab[aria-selected="true"] { color: #fff; background: #226b68; }
+#bbp-dialog[data-mode="top"] .bbp-tabs { background: #303033; color: #fff; }
+#bbp-dialog[data-mode="top"] .bbp-tab { border-color: #ffffff26; border-top: 0; }
+#bbp-dialog[data-mode="top"] .bbp-tab[aria-selected="true"] { color: #ffd9e7; background: #48353d; box-shadow: inset 0 -3px #eea1be; }
+#bbp-dialog .bbp-media { margin: 0; position: relative; aspect-ratio: 809 / 477; background: #f3f3f3; overflow: hidden; touch-action: pan-y; }
+#bbp-dialog .bbp-media img { display: block; width: 100%; height: 100%; max-width: none; object-fit: contain; margin: 0; }
+#bbp-dialog .bbp-error { position: absolute; inset: 0; display: grid; place-content: center; padding: 24px; text-align: center; background: #f3f3f3; color: #29252b; }
+#bbp-dialog .bbp-footer { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid #ddd; background: #fff; }
+#bbp-dialog .bbp-footer button { min-height: 52px; padding: 12px 8px; font-size: 14px; }
+#bbp-dialog .bbp-footer button + button { border-left: 1px solid #ddd; }
+#bbp-dialog[data-mode="top"] .bbp-footer { background: #303033; color: #fff; border-color: #ffffff40; }
+#bbp-dialog[data-mode="top"] .bbp-footer button + button { border-color: #ffffff40; }
+#bbp-dialog .bbp-view-nav { display: flex; align-items: center; justify-content: space-between; min-height: 46px; background: #fff; }
+#bbp-dialog .bbp-view-nav span { font-size: 13px; }
+#bbp-dialog[data-mode="fan"] { width: min(1180px, calc(100vw - 32px)); background: transparent; box-shadow: none; overflow-x: hidden; }
+#bbp-dialog[data-mode="fan"] .bbp-header { background: transparent; color: #fff; }
+#bbp-dialog[data-mode="fan"] .bbp-header button:focus-visible { outline-color: #fff; }
+#bbp-dialog .bbp-fan { display: flex; justify-content: center; align-items: center; padding: 58px 24px; min-height: 340px; }
+#bbp-dialog .bbp-card { flex: 0 1 292px; min-width: 0; margin: 0 -34px; padding: 8px; background: rgb(255 255 255 / 32%); border: 1px solid #ffffff80; border-radius: 8px; box-shadow: 0 16px 28px #0003; backdrop-filter: blur(16px); transform: translateY(var(--y)) rotate(var(--r)); transition: transform .4s ease, margin .4s ease; }
+#bbp-dialog .bbp-card:nth-child(1) { --r: -12deg; --y: 12px; }
+#bbp-dialog .bbp-card:nth-child(2) { --r: -4deg; --y: -12px; }
+#bbp-dialog .bbp-card:nth-child(3) { --r: 4deg; --y: -12px; }
+#bbp-dialog .bbp-card:nth-child(4) { --r: 12deg; --y: 12px; }
+#bbp-dialog .bbp-fan:hover .bbp-card, #bbp-dialog .bbp-fan:focus-within .bbp-card { margin: 0 6px; transform: none; }
+#bbp-dialog .bbp-card img { width: 100%; height: auto; aspect-ratio: 809 / 477; object-fit: contain; display: block; border-radius: 4px; }
+#bbp-dialog .bbp-card span { display: block; color: #fff; padding: 13px 4px 6px; font-weight: 700; font-size: 14px; }
+#bbp-dialog .bbp-card:focus-visible { outline-color: #fff; }
+#bbp-dialog[data-mode="fan"] .bbp-footer { max-width: 520px; margin: 0 auto; background: transparent; border-color: #ffffff50; color: #fff; }
+#bbp-dialog[data-mode="fan"] .bbp-footer button + button { border-color: #ffffff50; }
+#bbp-dialog[data-mode="fan"][data-expanded="true"] { width: min(809px, calc(100vw - 32px)); }
+@media (max-width: 700px), (hover: none) {
+  #bbp-dialog .bbp-fan { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; padding: 18px 2px 26px; min-height: 0; }
+  #bbp-dialog .bbp-fan .bbp-card { margin: 0; transform: none; padding: 5px; transition: none; }
+  #bbp-dialog .bbp-fan:hover .bbp-card, #bbp-dialog .bbp-fan:focus-within .bbp-card { margin: 0; }
+  #bbp-dialog .bbp-tab { font-size: 12px; min-height: 50px; padding: 8px 4px; }
+  #bbp-dialog .bbp-footer button { font-size: 13px; }
+  #bbp-dialog .bbp-card span { font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) { #bbp-dialog .bbp-card { transition: none; } }
+
+</style>
+<script>
+(function () {
+  'use strict';
+  if (window.BBPopup) return;
+  const config = { mode: 'top', autoOpen: true };
+  const base = 'https://cdn.beautyblossomth.kr/popup-tests/2026-09-22/glass-v1/';
+  const items = [
+    { title: '가을 진료 안내', file: 'autumn.png' },
+    { title: '첫 방문 상담', file: 'welcome.png' },
+    { title: '리프팅 상담', file: 'lifting.png' },
+    { title: '환절기 피부 상담', file: 'skin.png' }
+  ];
+  const storageKey = 'bb-popup:20260922:v1:hideUntil';
+  let dialog, media, picture, error, fan, tabs, viewNav, title, back;
+  let active = 0, mode = config.mode, savedFocus, overflow, touchX = null, locked = false;
+  const tabButtons = [];
+  function el(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text) node.textContent = text;
+    return node;
+  }
+  function button(text, className, handler, label) {
+    const node = el('button', className, text);
+    node.type = 'button';
+    if (label) { node.setAttribute('aria-label', label); node.title = label; }
+    node.addEventListener('click', handler);
+    return node;
+  }
+  function suppressed() {
+    try { return Number(localStorage.getItem(storageKey)) > Date.now(); }
+    catch (_) { return false; }
+  }
+  function hideToday() {
+    const midnight = new Date();
+    midnight.setHours(24, 0, 0, 0);
+    try { localStorage.setItem(storageKey, String(midnight.getTime())); } catch (_) {}
+    close();
+  }
+  function restore() {
+    if (!locked || dialog.open) return;
+    locked = false;
+    document.documentElement.style.overflow = overflow;
+    if (savedFocus && savedFocus.isConnected) savedFocus.focus({ preventScroll: true });
+  }
+  function close() { if (dialog && dialog.open) { dialog.close(); restore(); } }
+  function select(index, focusTab) {
+    active = (index + items.length) % items.length;
+    picture.alt = '뷰티블라썸의원 ' + items[active].title + ' 안내 이미지';
+    error.hidden = true;
+    picture.src = base + items[active].file;
+    tabButtons.forEach((tab, i) => {
+      tab.setAttribute('aria-selected', String(i === active));
+      tab.tabIndex = i === active ? 0 : -1;
+    });
+    media.setAttribute('aria-labelledby', 'bbp-tab-' + active);
+    viewNav.querySelector('span').textContent = items[active].title + ' · ' + (active + 1) + ' / 4';
+    if (focusTab) tabButtons[active].focus();
+  }
+  function expand(index) {
+    dialog.dataset.expanded = 'true';
+    fan.hidden = true; media.hidden = false; viewNav.hidden = false; back.hidden = false;
+    title.textContent = '뷰티블라썸 소식';
+    select(index);
+    back.focus();
+  }
+  function collapse() {
+    dialog.dataset.expanded = 'false';
+    fan.hidden = false; media.hidden = true; viewNav.hidden = true; back.hidden = true;
+    fan.children[active].focus();
+  }
+  function build() {
+    dialog = el('dialog'); dialog.id = 'bbp-dialog';
+    dialog.setAttribute('aria-labelledby', 'bbp-title');
+    const header = el('div', 'bbp-header');
+    back = button('←', 'bbp-icon', collapse, '카드 목록으로 돌아가기'); back.hidden = true;
+    title = el('h2', 'bbp-title', '뷰티블라썸 소식'); title.id = 'bbp-title';
+    header.append(back, title, button('×', 'bbp-icon', close, '팝업 닫기'));
+    tabs = el('div', 'bbp-tabs'); tabs.setAttribute('role', 'tablist'); tabs.setAttribute('aria-label', '뷰티블라썸 소식');
+    items.forEach((item, i) => {
+      const tab = button(item.title, 'bbp-tab', () => select(i));
+      tab.id = 'bbp-tab-' + i; tab.setAttribute('role', 'tab'); tab.setAttribute('aria-controls', 'bbp-panel');
+      tab.addEventListener('keydown', event => {
+        let index;
+        if (event.key === 'ArrowRight') index = active + 1;
+        if (event.key === 'ArrowLeft') index = active - 1;
+        if (event.key === 'Home') index = 0;
+        if (event.key === 'End') index = items.length - 1;
+        if (index !== undefined) { event.preventDefault(); select(index, true); }
+      });
+      tabs.append(tab); tabButtons.push(tab);
+    });
+    media = el('div', 'bbp-media'); media.id = 'bbp-panel'; media.setAttribute('role', 'tabpanel');
+    picture = el('img'); picture.width = 809; picture.height = 477; picture.draggable = false;
+    error = el('div', 'bbp-error', '이미지를 불러오지 못했습니다. 잠시 후 다시 열어 주세요.'); error.setAttribute('role', 'status'); error.hidden = true;
+    picture.addEventListener('error', () => { error.hidden = false; });
+    picture.addEventListener('load', () => { error.hidden = true; });
+    media.append(picture, error);
+    media.addEventListener('touchstart', event => { touchX = event.touches.length === 1 ? { x: event.touches[0].clientX, y: event.touches[0].clientY } : null; }, { passive: true });
+    media.addEventListener('touchend', event => {
+      if (!touchX || !event.changedTouches.length) return;
+      const dx = event.changedTouches[0].clientX - touchX.x;
+      const dy = event.changedTouches[0].clientY - touchX.y;
+      if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)) select(active + (dx < 0 ? 1 : -1));
+      touchX = null;
+    }, { passive: true });
+    media.addEventListener('touchcancel', () => { touchX = null; });
+    fan = el('div', 'bbp-fan');
+    items.forEach((item, i) => {
+      const card = button('', 'bbp-card', () => expand(i), item.title + ' 크게 보기');
+      const image = el('img'); image.src = base + item.file; image.alt = item.title; image.width = 809; image.height = 477;
+      card.append(image, el('span', '', item.title)); fan.append(card);
+    });
+    viewNav = el('div', 'bbp-view-nav');
+    viewNav.append(button('←', 'bbp-icon', () => select(active - 1), '이전 이미지'), el('span'), button('→', 'bbp-icon', () => select(active + 1), '다음 이미지'));
+    const footer = el('div', 'bbp-footer');
+    footer.append(button('오늘 하루 보지 않기', '', hideToday), button('닫기', '', close));
+    dialog.append(header, tabs, fan, media, viewNav, footer);
+    dialog.addEventListener('keydown', event => {
+      if (event.key !== 'Tab') return;
+      const stops = [...dialog.querySelectorAll('button')].filter(node => node.tabIndex >= 0 && node.getClientRects().length > 0);
+      const first = stops[0], last = stops[stops.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    });
+    dialog.addEventListener('click', event => {
+      if (event.target !== dialog) return;
+      const r = dialog.getBoundingClientRect();
+      if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) close();
+    });
+    dialog.addEventListener('cancel', event => { event.preventDefault(); close(); });
+    dialog.addEventListener('close', restore);
+    document.body.append(dialog);
+  }
+  function open(nextMode, respectSuppression) {
+    if (!document.body) { document.addEventListener('DOMContentLoaded', () => open(nextMode, respectSuppression), { once: true }); return; }
+    if (respectSuppression && suppressed()) return;
+    mode = ['fan', 'bottom', 'top'].includes(nextMode) ? nextMode : config.mode;
+    if (!dialog) build();
+    dialog.dataset.mode = mode; dialog.dataset.expanded = 'false';
+    tabs.hidden = mode === 'fan'; fan.hidden = mode !== 'fan'; media.hidden = mode === 'fan'; viewNav.hidden = true; back.hidden = true;
+    if (mode === 'bottom') media.after(tabs); else fan.before(tabs);
+    select(0);
+    if (!dialog.open) {
+      savedFocus = document.activeElement;
+      overflow = document.documentElement.style.overflow;
+      dialog.showModal(); locked = true; document.documentElement.style.overflow = 'hidden';
+    }
+  }
+  window.BBPopup = Object.freeze({ open, close });
+  if (config.autoOpen) open(config.mode, true);
+}());
+
+</script>
