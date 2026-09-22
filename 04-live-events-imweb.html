@@ -1,37 +1,33 @@
 <style>
-#bbe { all:initial; box-sizing:border-box; position:fixed; inset:0; margin:auto; padding:0; border:1px solid #686268; border-radius:8px; width:min(1260px,calc(100vw - 32px),calc((100dvh - 190px) * 2.4)); height:fit-content; max-height:calc(100dvh - 24px); overflow:auto; background:#202022; color:#f8f4f6; font:14px/1.45 "Malgun Gothic","Apple SD Gothic Neo",sans-serif; box-shadow:0 28px 90px #0008,inset 0 1px #fff5; letter-spacing:0; }
+#bbe { all:initial; box-sizing:border-box; position:fixed; inset:0; margin:auto; padding:0; border:1px solid #dedede; border-radius:8px; width:min(1260px,calc(100vw - 32px),calc((100dvh - 190px) * 2.4)); height:fit-content; max-height:calc(100dvh - 24px); overflow:auto; background:#fff; color:#302e33; font:14px/1.45 "Malgun Gothic","Apple SD Gothic Neo",sans-serif; box-shadow:0 24px 70px #0003; letter-spacing:0; }
 #bbe:not([open]) { display:none; }
-#bbe::backdrop { background:rgb(18 18 20 / 70%); backdrop-filter:blur(4px); }
+#bbe::backdrop { background:rgb(18 18 20 / 42%); backdrop-filter:blur(2px); }
 #bbe *,#bbe *::before,#bbe *::after { box-sizing:border-box; letter-spacing:0; }
 #bbe [hidden] { display:none!important; }
 #bbe button { appearance:none; font:inherit; color:inherit; background:transparent; border:0; border-radius:0; margin:0; padding:0; cursor:pointer; box-shadow:none; }
-#bbe :focus-visible { outline:2px solid #ffc6df; outline-offset:-3px; }
+#bbe :focus-visible { outline:2px solid #246c6a; outline-offset:-3px; }
 #bbe a { color:inherit; text-decoration:none; }
 #bbe .bbe-head { display:flex; align-items:center; gap:12px; min-height:54px; padding:4px 10px 4px 20px; }
 #bbe h2 { font-size:16px; line-height:1.4; font-weight:700; margin:0; padding:0; flex:1; color:inherit; }
 #bbe .bbe-icon { width:44px; height:44px; flex:0 0 44px; display:grid; place-items:center; font:24px/1 sans-serif; }
-#bbe .bbe-icon[aria-pressed="true"] { color:#ffbad7; }
+#bbe .bbe-icon[aria-pressed="true"] { color:#246c6a; }
 #bbe .bbe-stage { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; padding:8px 14px 14px; }
-#bbe .bbe-card { min-width:0; display:block; position:relative; border-radius:8px; padding:5px; background:linear-gradient(160deg,#48454a,#242326 45%); border:1px solid #ffffff38; box-shadow:inset 0 1px 1px #ffffff5c,0 6px 12px #0003; }
-#bbe .bbe-card::after { content:""; position:absolute; bottom:-1px; left:16%; right:16%; height:2px; background:#f7e4ed; box-shadow:0 0 10px 2px #efbed680; opacity:.5; pointer-events:none; transition:opacity .3s; }
-#bbe .bbe-card:hover::after,#bbe .bbe-card:focus-visible::after { opacity:1; }
+#bbe .bbe-card { min-width:0; display:block; position:relative; border-radius:4px; padding:0; background:#fff; }
 #bbe .bbe-image { position:relative; aspect-ratio:4/5; width:100%; overflow:hidden; border-radius:4px; background:#eeeeef; }
 #bbe .bbe-image img { position:absolute; inset:0; width:100%; height:100%; max-width:none; object-fit:contain; display:block; margin:0; opacity:0; transition:opacity .6s ease-in-out; }
 #bbe .bbe-image img.bbe-shown { opacity:1; }
 #bbe .bbe-card.bbe-empty { visibility:hidden; }
-#bbe .bbe-caption { display:block; padding:10px 5px 4px; height:46px; font-size:12px; line-height:16px; overflow:hidden; color:#e1dbe0; }
+#bbe .bbe-caption { display:block; padding:10px 5px 4px; height:46px; font-size:12px; line-height:16px; overflow:hidden; color:#58545a; }
 #bbe .bbe-caption span { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; overflow-wrap:anywhere; }
-#bbe .bbe-nav { display:flex; align-items:center; justify-content:center; gap:10px; min-height:48px; border-top:1px solid #ffffff18; }
-#bbe .bbe-count { font-variant-numeric:tabular-nums; min-width:78px; text-align:center; font-size:13px; }
-#bbe .bbe-tabs { display:flex; min-height:48px; overflow-x:auto; background:#151517; border-top:1px solid #ffffff20; }
-#bbe .bbe-tab { position:relative; min-width:56px; flex:1; height:48px; font-size:13px; border-right:1px solid #ffffff14; white-space:nowrap; }
-#bbe .bbe-tab[aria-selected="true"] { background:linear-gradient(#51424a,#2b2529); color:#ffe8f2; box-shadow:inset 0 -2px #ffc8e0,inset 0 1px #ffffff40; }
-#bbe .bbe-foot { display:grid; grid-template-columns:1fr 1fr; border-top:1px solid #ffffff20; }
+#bbe .bbe-tabs { display:flex; min-height:48px; background:#fff; border-top:1px solid #dedede; }
+#bbe .bbe-tab { position:relative; min-width:56px; flex:1; height:48px; font-size:15px; font-weight:700; white-space:nowrap; }
+#bbe .bbe-tab[aria-selected="true"] { background:#246c6a; color:#fff; }
+#bbe .bbe-foot { display:grid; grid-template-columns:1fr 1fr; border-top:1px solid #dedede; }
 #bbe .bbe-foot button { min-height:46px; padding:10px; font-size:13px; }
-#bbe .bbe-foot button+button { border-left:1px solid #ffffff20; }
-#bbe .bbe-state { padding:52px 24px; text-align:center; color:#e2dce0; min-height:210px; }
+#bbe .bbe-foot button+button { border-left:1px solid #dedede; }
+#bbe .bbe-state { padding:52px 24px; text-align:center; color:#58545a; min-height:210px; }
 #bbe .bbe-state a { display:block; margin:20px 0 0; text-decoration:underline; }
-#bbe .bbe-state button { display:block; margin:20px auto 0; padding:10px 20px; border:1px solid #ddd8; }
+#bbe .bbe-state button { display:block; margin:20px auto 0; padding:10px 20px; border:1px solid #ccc; }
 @media(max-width:700px) {
  #bbe { width:min(440px,calc(100vw - 24px),calc((100dvh - 260px) * .8)); min-width:230px; }
  #bbe .bbe-stage { grid-template-columns:minmax(0,1fr); gap:0; padding:4px 10px 12px; }
@@ -41,7 +37,7 @@
  #bbe h2 { font-size:14px; }
  #bbe .bbe-tab { min-width:44px; }
 }
-@media(prefers-reduced-motion:reduce) { #bbe .bbe-image img,#bbe .bbe-card::after { transition:none; } }
+@media(prefers-reduced-motion:reduce) { #bbe .bbe-image img { transition:none; } }
 
 </style>
 <script>
@@ -53,7 +49,7 @@
   const KEY = 'bb-events-v2-hideUntil';
   const INTERVAL = 1800;
   const mobile = matchMedia('(max-width:700px)'), reduced = matchMedia('(prefers-reduced-motion:reduce)');
-  let dialog, stage, tabs, state, nav, count, pauseButton, timer, refreshTimer, request;
+  let dialog, stage, tabs, state, pauseButton, timer, refreshTimer, request;
   let items=[], cards=[], index=0, generation=0, paused=reduced.matches, busy=false, focusBefore, overflow, locked=false;
   const preloads = new Map();
   const size = () => mobile.matches ? 1 : 3;
@@ -76,20 +72,10 @@
   function pause(value) { paused=value; syncPause(); schedule(); }
   function renderTabs() {
     tabs.replaceChildren();
-    for(let p=0;p<pageCount();p++) {
-      const first=p*size()+1, last=Math.min(first+size()-1,items.length);
-      const b=button(size()===1?String(first):first+'~'+last,'bbe-tab',first+'번째 이벤트부터 보기',()=>{pause(true);show(p);});
-      b.setAttribute('role','tab'); b.id='bbe-tab-'+p; b.setAttribute('aria-controls','bbe-stage');
-      b.addEventListener('keydown',e=>{
-        let next;
-        if(e.key==='ArrowRight')next=(p+1)%pageCount();
-        if(e.key==='ArrowLeft')next=(p+pageCount()-1)%pageCount();
-        if(e.key==='Home')next=0;
-        if(e.key==='End')next=pageCount()-1;
-        if(next!==undefined){e.preventDefault();pause(true);show(next);tabs.children[next].focus();}
-      });
-      tabs.append(b);
-    }
+    const tab=button('가을 진료안내','bbe-tab','',()=>{});
+    tab.id='bbe-tab-autumn';tab.setAttribute('role','tab');
+    tab.setAttribute('aria-controls','bbe-stage');tab.setAttribute('aria-selected','true');
+    tabs.append(tab);
   }
   async function show(next, immediate=false) {
     stop(); if(!items.length)return;
@@ -109,9 +95,7 @@
       incoming.style.transition=immediate?'none':''; outgoing.style.transition=''; incoming.classList.add('bbe-shown'); outgoing.classList.remove('bbe-shown');card.dataset.layer=String(nextLayer);
       card.querySelector('.bbe-caption span').textContent=ready[i]?item.title:'이미지를 불러오지 못했습니다. 상세 보기';
     });
-    [...tabs.children].forEach((tab,p)=>{tab.setAttribute('aria-selected',String(p===index));tab.tabIndex=p===index?0:-1;});
-    stage.setAttribute('aria-labelledby','bbe-tab-'+index);
-    count.textContent=(index*size()+1)+'~'+Math.min((index+1)*size(),items.length)+' / '+items.length;
+    stage.setAttribute('aria-labelledby','bbe-tab-autumn');
     busy=false; schedule();
     const start=((index+1)%pageCount())*size(); items.slice(start,start+size()).forEach(item=>imageOK(item.image));
   }
@@ -129,11 +113,9 @@
       const card=node('a','bbe-card'), frame=node('div','bbe-image'), caption=node('div','bbe-caption');card.dataset.layer='0';card.target='_blank';card.rel='noopener';
       frame.append(node('img'),node('img'));caption.append(node('span'));card.append(frame,caption);card.addEventListener('click',()=>pause(true));stage.append(card);cards.push(card);
     }
-    nav=node('div','bbe-nav');count=node('span','bbe-count');
-    nav.append(button('←','bbe-icon','이전 이벤트',()=>{pause(true);show(index-1);}),count,button('→','bbe-icon','다음 이벤트',()=>{pause(true);show(index+1);}));
-    tabs=node('div','bbe-tabs');tabs.setAttribute('role','tablist');tabs.setAttribute('aria-label','이벤트 순서');
+    tabs=node('div','bbe-tabs');tabs.setAttribute('role','tablist');tabs.setAttribute('aria-label','진료 안내');
     const foot=node('div','bbe-foot');foot.append(button('오늘 하루 보지 않기','','',hideToday),button('닫기','','',close));
-    dialog.append(head,state,stage,nav,tabs,foot);document.body.append(dialog);
+    dialog.append(head,state,stage,tabs,foot);document.body.append(dialog);
     dialog.addEventListener('cancel',e=>{e.preventDefault();close();});dialog.addEventListener('close',restore);
     dialog.addEventListener('keydown',e=>{
       if(e.key!=='Tab')return;
@@ -160,11 +142,11 @@
       if(!next.length||data.truncated||next.length!==data.items.length)throw new Error('invalid_feed');
       if(!dialog.open||request!==controller)return;
       const changed=JSON.stringify(items)!==JSON.stringify(next);
-      items=next;state.hidden=true;stage.hidden=false;tabs.hidden=false;nav.hidden=false;
+      items=next;state.hidden=true;stage.hidden=false;tabs.hidden=false;
       if(changed){preloads.clear();renderTabs();await show(0,true);}else if(!busy)schedule();
     } catch(_) {
       if(!dialog.open||request!==controller)return;stop();generation++;busy=false;items=[];
-      stage.hidden=true;tabs.hidden=true;nav.hidden=true;state.hidden=false;
+      stage.hidden=true;tabs.hidden=true;state.hidden=false;
       state.textContent='이벤트를 불러오지 못했습니다.';
       const a=node('a','','이벤트 페이지 열기');a.href=SOURCE;a.target='_blank';a.rel='noopener';
       state.append(a,button('다시 시도','','',()=>refresh()));
@@ -176,7 +158,7 @@
     if(!dialog)build();if(dialog.open)return;
     focusBefore=document.activeElement;overflow=document.documentElement.style.overflow;
     dialog.showModal();locked=true;document.documentElement.style.overflow='hidden';
-    stage.hidden=true;tabs.hidden=true;nav.hidden=true;state.hidden=false;state.textContent='이벤트를 불러오는 중입니다.';
+    stage.hidden=true;tabs.hidden=true;state.hidden=false;state.textContent='이벤트를 불러오는 중입니다.';
     items=[];refresh();clearInterval(refreshTimer);refreshTimer=setInterval(()=>{if(!document.hidden)refresh();},60000);
   }
   window.BBEvents=Object.freeze({open,close});
