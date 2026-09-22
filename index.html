@@ -78,7 +78,7 @@
   let active = 0, mode = config.mode, savedFocus, overflow, touchX = null, locked = false;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const gifSources = config.gif ? [config.gif, 'https://cdn.imweb.me/upload/S2025011326b2ce90ae445/' + (config.gif.endsWith('8832d583bac5c.gif') ? 'd320e21e3b63f.gif' : '8832d583bac5c.gif')] : [];
-  let gifPicture, gifControl, gifTimer, gifIndex=0, gifPaused=reduced.matches, dragCue;
+  let gifPicture, gifControl, gifTimer, gifIndex=0, gifPaused=reduced.matches;
   const tabButtons = [];
   function el(tag, className, text) {
     const node = document.createElement(tag);
@@ -109,7 +109,7 @@
     document.documentElement.style.overflow = overflow;
     if (savedFocus && savedFocus.isConnected) savedFocus.focus({ preventScroll: true });
   }
-  function close() { clearTimeout(gifTimer);dragCue?.stop(); if (dialog && dialog.open) { dialog.close(); restore(); } }
+  function close() { clearTimeout(gifTimer); if (dialog && dialog.open) { dialog.close(); restore(); } }
   function syncGif() {
     if (!config.gif) return;
     picture.style.opacity=active===0&&gifIndex===1?'0':'1';
@@ -137,7 +137,6 @@
     error.hidden = true;
     picture.src = active === 0 && config.gif ? config.gif : base + items[active].file;
     gifIndex=0;syncGif();scheduleGif();
-    if(active===0&&dialog.open)dragCue?.play();else dragCue?.stop();
     tabButtons.forEach((tab, i) => {
       tab.setAttribute('aria-selected', String(i === active));
       tab.tabIndex = i === active ? 0 : -1;
@@ -193,7 +192,6 @@
       mediaLink = el('a', 'bbp-media-link'); mediaLink.target = '_blank'; mediaLink.rel = 'noopener';
       gifPicture=el('img','bbp-gif-next');gifPicture.src=gifSources[1];gifPicture.alt='뷰티블라썸의원 이벤트 안내 이미지';gifPicture.width=800;gifPicture.height=600;
       mediaLink.append(picture,gifPicture); media.append(mediaLink, error);
-      dragCue=window.BBDragCue(media);
     } else media.append(picture, error);
     media.addEventListener('touchstart', event => { touchX = event.touches.length === 1 ? { x: event.touches[0].clientX, y: event.touches[0].clientY } : null; }, { passive: true });
     media.addEventListener('touchend', event => {
@@ -248,7 +246,6 @@
       dialog.showModal(); locked = true; document.documentElement.style.overflow = 'hidden';
     }
     scheduleGif();
-    if(active===0)dragCue?.play();
   }
   window.BBPopup = Object.freeze({ open, close });
   if (config.autoOpen) open(config.mode, true);
@@ -300,45 +297,8 @@
 }
 @media(prefers-reduced-motion:reduce) { #bbe .bbe-image img { transition:none; } }
 
-.bb-dragcue { position:absolute; inset:0; z-index:5; pointer-events:none!important; overflow:hidden; opacity:0; }
-.bb-dragcue * { box-sizing:border-box; pointer-events:none!important; }
-.bb-dragcue-frame { position:absolute; inset:16px; border:2px solid #8bddf9; transform-origin:top left; }
-.bb-dragcue-handle { position:absolute; width:12px; height:12px; background:#9ce3fc; border:1px solid #e7faff; }
-.bb-dragcue-handle.tl { top:-7px; left:-7px; }
-.bb-dragcue-handle.tr { top:-7px; right:-7px; }
-.bb-dragcue-handle.bl { bottom:-7px; left:-7px; }
-.bb-dragcue-handle.br { bottom:-7px; right:-7px; }
-.bb-dragcue-cursor { position:absolute; bottom:-25px; right:-25px; width:32px; height:32px; filter:drop-shadow(0 2px 2px #0003); }
-.bb-dragcue[data-playing="true"] { animation:bb-cue-visibility 3.2s ease both; }
-.bb-dragcue[data-playing="true"] .bb-dragcue-frame { animation:bb-cue-drag 3.2s ease-in-out both; }
-.bb-dragcue[data-playing="true"] .bb-dragcue-cursor { animation:bb-cue-cursor 3.2s ease-in-out both; }
-@keyframes bb-cue-visibility { 0%,100%{opacity:0} 12%,82%{opacity:1} }
-@keyframes bb-cue-drag { 0%,28%,80%,100%{transform:scale(.96,.94)} 52%,65%{transform:scale(1,1)} }
-@keyframes bb-cue-cursor { 0%,12%{transform:translate(34px,26px);opacity:0} 28%,75%{transform:translate(0,0);opacity:1} 100%{transform:translate(26px,22px);opacity:0} }
-@media(prefers-reduced-motion:reduce) { .bb-dragcue { display:none!important; } }
-
 </style>
 <script>
-(function(){
-  'use strict';
-  if(window.BBDragCue)return;
-  window.BBDragCue=function(target){
-    const cue=document.createElement('div');cue.className='bb-dragcue';cue.setAttribute('aria-hidden','true');
-    const frame=document.createElement('div');frame.className='bb-dragcue-frame';
-    for(const corner of ['tl','tr','bl','br']){const handle=document.createElement('i');handle.className='bb-dragcue-handle '+corner;frame.append(handle);}
-    const cursor=document.createElement('span');cursor.className='bb-dragcue-cursor';
-    // Lucide MousePointer2, decorative and never an interactive target.
-    cursor.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="white" stroke="#252b31" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m4 4 7.07 17 2.51-7.39L21 11.07 4 4z"/></svg>';
-    frame.append(cursor);cue.append(frame);target.append(cue);
-    const reduced=matchMedia('(prefers-reduced-motion:reduce)');let raf;
-    function stop(){cancelAnimationFrame(raf);cue.removeAttribute('data-playing');}
-    function play(){stop();if(reduced.matches)return;raf=requestAnimationFrame(()=>{raf=requestAnimationFrame(()=>{cue.dataset.playing='true';});});}
-    cue.addEventListener('animationend',e=>{if(e.animationName==='bb-cue-visibility')stop();});
-    reduced.addEventListener('change',()=>{if(reduced.matches)stop();});
-    return Object.freeze({play,stop});
-  };
-}());
-
 (function () {
   'use strict';
   if (window.BBEvents) return;
@@ -356,7 +316,7 @@
   const mobile = matchMedia('(max-width:700px)'), reduced = matchMedia('(prefers-reduced-motion:reduce)');
   let dialog, stage, tabs, state, pauseButton, timer, refreshTimer, request;
   let items=[], cards=[], index=0, generation=0, paused=reduced.matches, busy=false, focusBefore, overflow, locked=false;
-  let activeTab=0, panels=[], dragCue, cuePending=false;
+  let activeTab=0, panels=[];
   const preloads = new Map();
   const size = () => mobile.matches ? 1 : 3;
   const pageCount = () => Math.ceil(items.length / size());
@@ -386,7 +346,7 @@
   function selectTab(next,focus=false) {
     stop();generation++;busy=false;activeTab=(next+sections.length)%sections.length;
     syncView();
-    if(activeTab===0){cuePending=true;if(items.length)show(index,true);}else{cuePending=false;dragCue.stop();}
+    if(activeTab===0&&items.length)show(index,true);
     if(focus)tabs.children[activeTab].focus();
   }
   function renderTabs() {
@@ -426,11 +386,10 @@
     });
     stage.setAttribute('aria-labelledby','bbe-tab-0');
     busy=false; schedule();
-    if(cuePending&&activeTab===0){cuePending=false;dragCue.play();}
     const start=((index+1)%pageCount())*size(); items.slice(start,start+size()).forEach(item=>imageOK(item.image));
   }
   function restore() { if(!locked||dialog.open)return;locked=false;document.documentElement.style.overflow=overflow;if(focusBefore?.isConnected)focusBefore.focus({preventScroll:true}); }
-  function close() { if(!dialog?.open)return;stop();dragCue.stop();clearInterval(refreshTimer);generation++;request?.abort();request=null;busy=false;dialog.close();restore(); }
+  function close() { if(!dialog?.open)return;stop();clearInterval(refreshTimer);generation++;request?.abort();request=null;busy=false;dialog.close();restore(); }
   function hideToday() { const date=new Date();date.setHours(24,0,0,0);try{localStorage.setItem(KEY,String(+date));}catch(_){}close(); }
   function build() {
     dialog=node('dialog');dialog.id='bbe';dialog.setAttribute('aria-labelledby','bbe-title');
@@ -444,7 +403,6 @@
       frame.append(node('img'),node('img'));caption.append(node('span'));card.append(frame,caption);card.addEventListener('click',()=>pause(true));stage.append(card);cards.push(card);
     }
     tabs=node('div','bbe-tabs');tabs.setAttribute('role','tablist');tabs.setAttribute('aria-label','진료 안내');
-    dragCue=window.BBDragCue(stage);
     renderTabs();
     panels=sections.slice(1).map((section,i)=>{
       const panel=node('div','bbe-static'),img=node('img'),error=node('div','bbe-static-error','이미지를 불러오지 못했습니다. 잠시 후 다시 열어 주세요.');
@@ -498,7 +456,7 @@
     focusBefore=document.activeElement;overflow=document.documentElement.style.overflow;
     dialog.showModal();locked=true;document.documentElement.style.overflow='hidden';
     state.textContent='이벤트를 불러오는 중입니다.';
-    items=[];index=0;activeTab=0;cuePending=true;syncView();refresh();clearInterval(refreshTimer);refreshTimer=setInterval(()=>{if(!document.hidden)refresh();},60000);
+    items=[];index=0;activeTab=0;syncView();refresh();clearInterval(refreshTimer);refreshTimer=setInterval(()=>{if(!document.hidden)refresh();},60000);
   }
   window.BBEvents=Object.freeze({open,close});
   if (true) open(true);
