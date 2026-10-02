@@ -122,14 +122,13 @@
 #bbe .bbe-folder-toggle:hover .bbe-photo{transform:translateY(-7px) rotate(0)}
 #bbe .bbe-folder-toggle:active{transform:translateY(1px)}
 #bbe .bbe-folder-toggle[aria-expanded=true] .bbe-folder-arrow{transform:rotate(180deg)}
-#bbe .bbe-folder-toggle[aria-expanded=true] .bbe-folder-cover{transform:translateY(4px)}
+#bbe .bbe-folder-toggle[aria-expanded=true]{height:auto;aspect-ratio:1.2}
+#bbe .bbe-folder-toggle[aria-expanded=true] .bbe-photo{top:29px;bottom:55px;height:auto;transform:none;border-radius:10px}
+#bbe .bbe-folder-toggle[aria-expanded=true] .bbe-photo img{object-position:center!important}
+#bbe .bbe-folder-toggle[aria-expanded=true] .bbe-folder-cover{top:auto;bottom:0;height:78px;transform:none}
 #bbe .bbe-folders figure:nth-of-type(2) .bbe-folder-back{background:#dcd7e9}
 #bbe .bbe-folders figure:nth-of-type(2) .bbe-folder-cover{background:linear-gradient(150deg,#eeebf8,#d6cfe8);color:#40364f}
 #bbe .bbe-folders figure:nth-of-type(2) .bbe-folder-cover::before{background:#eeebf8}
-#bbe .bbe-folder-panel{margin-top:12px;padding:7px;border:1px solid #ffffffeb;border-radius:14px;background:#fff9;box-shadow:0 7px 16px #72506812}
-#bbe .bbe-folder-panel .bbe-photo{aspect-ratio:16/10;border-radius:9px}
-#bbe .bbe-folder-panel img{object-position:center!important}
-#bbe .bbe-folder-panel figcaption{padding:9px 7px 3px;background:none;color:#5c4a57;font-size:13px;line-height:1.4}
 #bbe .bbe-location{min-width:0;overflow:hidden;border:1px solid #ffffffed;border-radius:20px;background:#fffafc;box-shadow:0 5px 14px #51374712}
 #bbe .bbe-location-head{position:relative;padding:22px 24px 20px;background:radial-gradient(ellipse at 100% 0,#f9ddeb,transparent 72%),linear-gradient(140deg,#fff,#fcf2f7)}
 #bbe .bbe-transit{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#6d5b69}
@@ -247,7 +246,9 @@ window.BBPopupConfig={"country":"TH"};
  }
  function toggleFolder(index){
   const figures=[...interior.querySelectorAll('.bbe-folders>figure')],opening=figures[index].querySelector('.bbe-folder-toggle').getAttribute('aria-expanded')!=='true';
-  figures.forEach((f,i)=>{const open=opening&&i===index,b=f.querySelector('.bbe-folder-toggle'),panel=f.querySelector('.bbe-folder-panel');b.setAttribute('aria-expanded',String(open));panel.hidden=!open;if(open&&!reduced.matches&&panel.animate)panel.animate([{opacity:0,transform:'translateY(-8px)'},{opacity:1,transform:'translateY(0)'}],{duration:220,easing:'cubic-bezier(.16,1,.3,1)'});});
+  const positions=figures.map(f=>f.querySelector('.bbe-folder-cover').getBoundingClientRect().top);
+  figures.forEach((f,i)=>{const open=opening&&i===index,b=f.querySelector('.bbe-folder-toggle'),cover=f.querySelector('.bbe-folder-cover');cover.getAnimations().forEach(a=>a.cancel());b.setAttribute('aria-expanded',String(open));});
+  figures.forEach((f,i)=>{const cover=f.querySelector('.bbe-folder-cover'),offset=positions[i]-cover.getBoundingClientRect().top;if(!reduced.matches&&cover.animate&&Math.abs(offset)>1)cover.animate([{transform:`translateY(${offset}px)`},{transform:'translateY(0)'}],{duration:240,easing:'cubic-bezier(.16,1,.3,1)'});});
  }
  function photoFrame(files){
   const frame=node('div','bbe-photo'),error=node('span','bbe-photo-error');error.hidden=true;
@@ -260,9 +261,8 @@ window.BBPopupConfig={"country":"TH"};
    const f=node('figure');f.dataset.photo='0';f.dataset.layer='0';
    const toggle=button('','bbe-folder-toggle','',()=>toggleFolder(i));toggle.id=`bbe-folder-${i}`;toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-controls',`bbe-folder-panel-${i}`);
    const cover=node('span','bbe-folder-cover');cover.append(node('span','bbe-folder-number',i?'8F':'6F'),node('span','bbe-folder-name'),node('span','bbe-folder-arrow','⌄'));cover.querySelector('.bbe-folder-arrow').setAttribute('aria-hidden','true');
-   const peek=photoFrame(files);peek.setAttribute('aria-hidden','true');toggle.append(node('span','bbe-folder-back'),peek,cover);
-   const panel=node('div','bbe-folder-panel');panel.id=`bbe-folder-panel-${i}`;panel.hidden=true;panel.setAttribute('role','region');panel.setAttribute('aria-labelledby',toggle.id);panel.append(photoFrame(files),node('figcaption'));
-   f.append(toggle,panel);folders.append(f);
+   const peek=photoFrame(files);peek.id=`bbe-folder-panel-${i}`;peek.setAttribute('aria-hidden','true');toggle.append(node('span','bbe-folder-back'),peek,cover);
+   f.append(toggle,node('figcaption','bbe-sr-only'));folders.append(f);
   });
   const locationCard=node('section','bbe-location'),head=node('div','bbe-location-head'),transit=node('div','bbe-transit');transit.append(node('i','','2'),node('i','','6'),node('span','bbe-transit-label'));
   const h=node('h3');h.id='bbe-location-title';const station=node('span','bbe-location-station'),scene=node('span','bbe-cube-scene'),cube=node('span','bbe-cube');station.setAttribute('aria-hidden','true');scene.setAttribute('aria-hidden','true');
