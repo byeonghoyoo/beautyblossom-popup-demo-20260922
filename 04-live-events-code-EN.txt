@@ -1,4 +1,4 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>뷰티블라썸 · 7개국 팝업 목업</title><style>body{margin:0;background:#edf2ef;color:#264d45;font:16px/1.6 "Malgun Gothic",sans-serif}main{max-width:960px;margin:12vh auto;padding:32px}h1{font-size:clamp(32px,6vw,72px);line-height:1.1;font-weight:500;margin:24px 0}p{max-width:540px;color:#576a60}main button{font:inherit;color:white;background:#246c6a;border:0;border-radius:12px;padding:15px 28px;cursor:pointer}main a{display:inline-block;color:inherit;margin:16px 0}small{display:block;margin-top:24px;color:#6a786d}</style></head><body><main><h1>Beauty Blossom</h1><p>공지사항 · 프로모션 · 이벤트 · 병원소개</p><p>팝업 상단에서 7개국 화면을 선택할 수 있습니다.<br>게시판 소식은 자동으로 갱신됩니다.</p><button onclick="BBEvents.open()">팝업 다시 보기</button><small>디자인 확인용 목업 · 홈페이지 적용 전</small></main><style>
+<style>
 #bbe{all:initial;box-sizing:border-box;position:fixed;inset:0;margin:auto;padding:0;border:1px solid #dce4e1;border-radius:20px;width:min(1260px,calc(100vw - 32px),calc((100dvh - 268px)*2.4));height:fit-content;max-height:calc(100dvh - 24px);overflow:auto;background:#fff;color:#302e33;font:14px/1.5 "Malgun Gothic","Apple SD Gothic Neo",Arial,sans-serif;box-shadow:0 28px 90px #10272433;letter-spacing:0;color-scheme:light}
 #bbe:not([open]){display:none}#bbe::backdrop{background:rgb(18 28 27 / 40%);backdrop-filter:blur(3px)}
 #bbe *,#bbe *::before,#bbe *::after{box-sizing:border-box;letter-spacing:0}#bbe [hidden]{display:none!important}
@@ -26,7 +26,7 @@
 
 </style>
 <script>
-window.BBPopupConfig={"preview":true};
+window.BBPopupConfig={"country":"EN"};
 (function(){
  'use strict';
  if(window.BBEvents)return;
@@ -167,4 +167,4 @@ window.BBPopupConfig={"preview":true};
  if(true)open(true);
 }());
 
-</script></body></html>
+</script>

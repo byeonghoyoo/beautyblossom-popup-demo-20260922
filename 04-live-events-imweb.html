@@ -1,211 +1,169 @@
 <style>
-#bbe { all:initial; box-sizing:border-box; position:fixed; inset:0; margin:auto; padding:0; border:1px solid #dedede; border-radius:8px; width:min(1260px,calc(100vw - 32px),calc((100dvh - 190px) * 2.4)); height:fit-content; max-height:calc(100dvh - 24px); overflow:auto; background:#fff; color:#302e33; font:14px/1.45 "Malgun Gothic","Apple SD Gothic Neo",sans-serif; box-shadow:0 24px 70px #0003; letter-spacing:0; }
-#bbe:not([open]) { display:none; }
-#bbe::backdrop { background:rgb(18 18 20 / 42%); backdrop-filter:blur(2px); }
-#bbe *,#bbe *::before,#bbe *::after { box-sizing:border-box; letter-spacing:0; }
-#bbe [hidden] { display:none!important; }
-#bbe button { appearance:none; font:inherit; color:inherit; background:transparent; border:0; border-radius:0; margin:0; padding:0; cursor:pointer; box-shadow:none; }
-#bbe :focus-visible { outline:2px solid #246c6a; outline-offset:-3px; }
-#bbe a { color:inherit; text-decoration:none; }
-#bbe .bbe-head { display:flex; align-items:center; gap:12px; min-height:54px; padding:4px 10px 4px 20px; }
-#bbe h2 { font-size:16px; line-height:1.4; font-weight:700; margin:0; padding:0; flex:1; color:inherit; }
-#bbe .bbe-icon { width:44px; height:44px; flex:0 0 44px; display:grid; place-items:center; font:24px/1 sans-serif; }
-#bbe .bbe-icon[aria-pressed="true"] { color:#246c6a; }
-#bbe .bbe-stage { position:relative; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; padding:8px 14px 14px; }
-#bbe .bbe-card { min-width:0; display:block; position:relative; border-radius:4px; padding:0; background:#fff; }
-#bbe .bbe-image { position:relative; aspect-ratio:4/5; width:100%; overflow:hidden; border-radius:4px; background:#eeeeef; }
-#bbe .bbe-image img { position:absolute; inset:0; width:100%; height:100%; max-width:none; object-fit:contain; display:block; margin:0; opacity:0; transition:opacity .6s ease-in-out; }
-#bbe .bbe-image img.bbe-shown { opacity:1; }
-#bbe .bbe-card.bbe-empty { visibility:hidden; }
-#bbe .bbe-caption { display:block; padding:10px 5px 4px; height:46px; font-size:12px; line-height:16px; overflow:hidden; color:#58545a; }
-#bbe .bbe-caption span { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; overflow-wrap:anywhere; }
-#bbe .bbe-static { position:relative; aspect-ratio:809/477; background:#fff; }
-#bbe .bbe-static img { display:block; width:100%; height:100%; object-fit:contain; margin:0; }
-#bbe .bbe-static-error { position:absolute; inset:0; display:grid; place-items:center; padding:24px; background:#fff; text-align:center; }
-#bbe .bbe-tabs { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); min-height:54px; background:#fff; border-top:1px solid #dedede; }
-#bbe .bbe-tab { position:relative; min-width:0; min-height:54px; padding:10px 6px; font-size:14px; font-weight:700; border-right:1px solid #dedede; word-break:keep-all; overflow-wrap:anywhere; }
-#bbe .bbe-tab:last-child { border-right:0; }
-#bbe .bbe-tab[aria-selected="true"] { background:#246c6a; color:#fff; }
-#bbe .bbe-foot { display:grid; grid-template-columns:1fr 1fr; border-top:1px solid #dedede; }
-#bbe .bbe-foot button { min-height:46px; padding:10px; font-size:13px; }
-#bbe .bbe-foot button+button { border-left:1px solid #dedede; }
-#bbe .bbe-state { padding:52px 24px; text-align:center; color:#58545a; min-height:210px; }
-#bbe .bbe-state a { display:block; margin:20px 0 0; text-decoration:underline; }
-#bbe .bbe-state button { display:block; margin:20px auto 0; padding:10px 20px; border:1px solid #ccc; }
-@media(max-width:700px) {
- #bbe { width:min(440px,calc(100vw - 24px),calc((100dvh - 260px) * .8)); min-width:230px; }
- #bbe .bbe-stage { grid-template-columns:minmax(0,1fr); gap:0; padding:4px 10px 12px; }
- #bbe .bbe-card:nth-child(n+2) { display:none; }
- #bbe .bbe-caption { height:42px; }
- #bbe .bbe-head { padding-left:14px; gap:2px; }
- #bbe h2 { font-size:14px; }
- #bbe .bbe-tab { font-size:12px; padding:8px 4px; }
-}
-@media(prefers-reduced-motion:reduce) { #bbe .bbe-image img { transition:none; } }
+#bbe{all:initial;box-sizing:border-box;position:fixed;inset:0;margin:auto;padding:0;border:1px solid #dce4e1;border-radius:20px;width:min(1260px,calc(100vw - 32px),calc((100dvh - 268px)*2.4));height:fit-content;max-height:calc(100dvh - 24px);overflow:auto;background:#fff;color:#302e33;font:14px/1.5 "Malgun Gothic","Apple SD Gothic Neo",Arial,sans-serif;box-shadow:0 28px 90px #10272433;letter-spacing:0;color-scheme:light}
+#bbe:not([open]){display:none}#bbe::backdrop{background:rgb(18 28 27 / 40%);backdrop-filter:blur(3px)}
+#bbe *,#bbe *::before,#bbe *::after{box-sizing:border-box;letter-spacing:0}#bbe [hidden]{display:none!important}
+#bbe button{appearance:none;font:inherit;color:inherit;background:transparent;border:0;border-radius:0;margin:0;padding:0;cursor:pointer;box-shadow:none}#bbe button:disabled{opacity:.35;cursor:default}
+#bbe :focus-visible{outline:2px solid #246c6a;outline-offset:-3px}#bbe a{color:inherit;text-decoration:none}
+#bbe .bbe-head{display:flex;align-items:center;gap:8px;min-height:56px;padding:6px 10px 4px 22px}#bbe h2{font-size:16px;line-height:1.45;font-weight:700;margin:0;padding:0;flex:1;color:inherit;overflow-wrap:anywhere}
+#bbe .bbe-icon{width:42px;height:42px;flex:0 0 42px;display:grid;place-items:center;font:24px/1 Arial,sans-serif;border-radius:50%}#bbe .bbe-icon:hover{background:#f0f5f3}#bbe .bbe-icon[aria-pressed=true]{color:#246c6a}
+#bbe .bbe-preview{display:flex;align-items:center;justify-content:space-between;padding:0 22px 10px;gap:12px;color:#626d68;font-size:12px}#bbe .bbe-preview select{font:inherit;color:#246c6a;border:1px solid #dce4e1;border-radius:8px;background:#f7faf9;min-height:32px;padding:4px 28px 4px 10px}
+#bbe .bbe-stage{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:4px 16px 0}
+#bbe .bbe-card{min-width:0;display:block;position:relative;border-radius:12px;padding:0;background:#fff;border:1px solid #e5eae7;overflow:hidden;box-shadow:0 3px 8px #17372d08}
+#bbe .bbe-image{position:relative;aspect-ratio:4/5;width:100%;overflow:hidden;background:#f3f5f4}#bbe .bbe-image img{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:contain;display:block;margin:0;opacity:0;transition:opacity .6s ease-in-out}#bbe .bbe-image img.bbe-shown{opacity:1}
+#bbe .bbe-card.bbe-empty{visibility:hidden}#bbe .bbe-card-fallback{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:24px;font-size:clamp(16px,2vw,26px);font-weight:700;color:#246c6a;overflow-wrap:anywhere}
+#bbe .bbe-caption{display:block;padding:9px 12px;height:48px;font-size:12px;line-height:16px;overflow:hidden;color:#585e5b}#bbe .bbe-caption span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+#bbe .bbe-pager{display:flex;align-items:center;justify-content:center;gap:14px;height:40px;color:#66716a;font-size:12px;font-variant-numeric:tabular-nums}#bbe .bbe-step{width:36px;height:36px;font-size:24px;border-radius:50%}#bbe .bbe-step:hover{background:#f2f5f4}
+#bbe .bbe-tabs{position:relative;isolation:isolate;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:0 16px 14px;padding:5px;background:#f2f5f4;border:1px solid #dce4e1;border-radius:16px;min-height:58px}
+#bbe .bbe-pill{position:absolute;z-index:-1;left:5px;top:5px;bottom:5px;width:calc((100% - 10px)/4);border:1px solid #1d6562;border-radius:12px;background:linear-gradient(180deg,#368987,#1e625f);box-shadow:inset 0 1px 1px #ffffff60,0 3px 7px #246c6a38;transition:transform .38s cubic-bezier(.22,1,.36,1)}
+#bbe .bbe-tab{min-width:0;min-height:46px;padding:9px 6px;font-size:14px;font-weight:700;border-radius:12px;word-break:keep-all;overflow-wrap:anywhere;transition:color .18s}#bbe .bbe-tab[aria-selected=true]{color:#fff}
+#bbe .bbe-foot{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid #e5eae7;background:#fbfcfb}#bbe .bbe-foot button{min-height:46px;padding:10px;font-size:12px;color:#606963}#bbe .bbe-foot button+button{border-left:1px solid #e5eae7}
+#bbe .bbe-state{padding:54px 24px;text-align:center;color:#585e5b;min-height:250px}#bbe .bbe-state p{margin:0}#bbe .bbe-state a{display:block;margin:20px 0 0;text-decoration:underline}#bbe .bbe-retry{display:block;margin:18px auto 0;padding:10px 22px;border:1px solid #dce4e1;border-radius:10px}
+#bbe .bbe-interior{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:4px 16px 18px}#bbe .bbe-interior figure{position:relative;margin:0;min-width:0;overflow:hidden;border:1px solid #dce4e1;border-radius:12px;background:#f3f5f4}#bbe .bbe-interior img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;margin:0}#bbe .bbe-interior figcaption{font-size:14px;font-weight:700;padding:15px;color:#246c6a;background:#fff}#bbe .bbe-photo-error{position:absolute;inset:0;display:grid;place-items:center;text-align:center;background:#f3f5f4;padding:20px}
+@media(max-width:700px){#bbe{width:min(440px,calc(100vw - 24px),calc((100dvh - 280px)*.8));min-width:min(280px,calc(100vw - 24px));border-radius:16px}#bbe .bbe-stage{grid-template-columns:minmax(0,1fr);gap:0;padding:2px 10px 0}#bbe .bbe-card:nth-child(n+2){display:none}#bbe .bbe-caption{height:43px}#bbe .bbe-head{padding-left:14px;gap:2px}#bbe h2{font-size:13px}#bbe .bbe-preview{padding:0 14px 8px}#bbe .bbe-tab{font-size:11px;padding:7px 3px}#bbe .bbe-tabs{margin:0 10px 10px;min-height:55px}#bbe .bbe-foot button{font-size:11px}#bbe .bbe-interior{grid-template-columns:1fr;gap:10px;padding:4px 10px 14px}#bbe .bbe-interior img{aspect-ratio:16/9}#bbe .bbe-interior figcaption{font-size:12px;padding:10px}#bbe .bbe-interior figure:first-child img{object-position:center 68%}}
+#bbe .bbe-interior img{aspect-ratio:4/3}#bbe .bbe-interior figure:first-child img{object-position:center 68%}
+@media(max-width:700px){#bbe .bbe-interior img{aspect-ratio:16/9}}
+@media(prefers-reduced-motion:reduce){#bbe .bbe-image img,#bbe .bbe-pill,#bbe .bbe-tab{transition:none}}
 
 </style>
 <script>
-(function () {
-  'use strict';
-  if (window.BBEvents) return;
-  const ENDPOINT = 'https://beautyblossom-popup-feed.beautyblossom.workers.dev/events';
-  const SOURCE = 'https://beautyblossom.kr/22';
-  const KEY = 'bb-events-v2-hideUntil';
-  const INTERVAL = 1800;
-  const sections = [
-    {title:'이벤트'},
-    {title:'첫 방문 상담',file:'welcome.png'},
-    {title:'리프팅 상담',file:'lifting.png'},
-    {title:'환절기 피부 상담',file:'skin.png'}
-  ];
-  const imageBase='https://cdn.beautyblossomth.kr/popup-tests/2026-09-22/glass-v1/';
-  const mobile = matchMedia('(max-width:700px)'), reduced = matchMedia('(prefers-reduced-motion:reduce)');
-  let dialog, stage, tabs, state, pauseButton, timer, refreshTimer, request;
-  let items=[], cards=[], index=0, generation=0, paused=reduced.matches, busy=false, focusBefore, overflow, locked=false;
-  let activeTab=0, panels=[];
-  const preloads = new Map();
-  const size = () => mobile.matches ? 1 : 3;
-  const pageCount = () => Math.ceil(items.length / size());
-  function node(tag, cls, text) { const e=document.createElement(tag); if(cls)e.className=cls; if(text)e.textContent=text; return e; }
-  function button(text, cls, label, fn) { const b=node('button',cls,text); b.type='button'; if(label){b.title=label;b.setAttribute('aria-label',label);} b.addEventListener('click',fn); return b; }
-  function imageOK(url) {
-    if (!preloads.has(url)) preloads.set(url,new Promise(resolve=>{
-      const im=new Image(); const t=setTimeout(()=>resolve(false),10000);
-      im.onload=()=>{clearTimeout(t);resolve(im.naturalWidth>0);}; im.onerror=()=>{clearTimeout(t);resolve(false);}; im.src=url;
-    }));
-    return preloads.get(url);
-  }
-  function stop() { clearTimeout(timer); timer=null; }
-  function schedule() {
-    stop();
-    if(dialog?.open && activeTab===0 && !paused && !document.hidden && pageCount()>1 && !busy) timer=setTimeout(()=>show(index+1),INTERVAL);
-  }
-  function syncPause() { pauseButton.textContent=paused?'▶':'Ⅱ'; pauseButton.setAttribute('aria-pressed',String(paused)); pauseButton.setAttribute('aria-label',paused?'자동 전환 재생':'자동 전환 일시정지'); pauseButton.title=pauseButton.getAttribute('aria-label'); }
-  function pause(value) { paused=value; syncPause(); schedule(); }
-  function syncView() {
-    stage.hidden=activeTab!==0||!items.length;
-    state.hidden=activeTab!==0||items.length>0;
-    pauseButton.hidden=activeTab!==0;
-    panels.forEach((panel,i)=>{panel.hidden=activeTab!==i+1;});
-    [...tabs.children].forEach((tab,i)=>{tab.setAttribute('aria-selected',String(i===activeTab));tab.tabIndex=i===activeTab?0:-1;});
-  }
-  function selectTab(next,focus=false) {
-    stop();generation++;busy=false;activeTab=(next+sections.length)%sections.length;
-    syncView();
-    if(activeTab===0&&items.length)show(index,true);
-    if(focus)tabs.children[activeTab].focus();
-  }
-  function renderTabs() {
-    tabs.replaceChildren();
-    sections.forEach((section,i)=>{
-      const tab=button(section.title,'bbe-tab','',()=>selectTab(i));
-      tab.id='bbe-tab-'+i;tab.setAttribute('role','tab');
-      tab.setAttribute('aria-controls',i===0?'bbe-stage':'bbe-panel-'+i);
-      tab.addEventListener('keydown',e=>{
-        let next;
-        if(e.key==='ArrowRight')next=i+1;
-        if(e.key==='ArrowLeft')next=i-1;
-        if(e.key==='Home')next=0;
-        if(e.key==='End')next=sections.length-1;
-        if(next!==undefined){e.preventDefault();selectTab(next,true);}
-      });
-      tabs.append(tab);
-    });
-  }
-  async function show(next, immediate=false) {
-    stop(); if(!items.length)return;
-    const token=++generation; busy=true;
-    const target=(next+pageCount())%pageCount(), row=items.slice(target*size(),target*size()+size());
-    const ready=await Promise.all(row.map(item=>imageOK(item.image)));
-    if(token!==generation||!dialog.open)return;
-    index=target;
-    cards.forEach((card,i)=>{
-      const item=row[i]; card.classList.toggle('bbe-empty',!item);
-      if(!item){card.removeAttribute('href');card.tabIndex=-1;card.setAttribute('aria-hidden','true');return;}
-      card.tabIndex=0;card.removeAttribute('aria-hidden');card.href=item.href;card.setAttribute('aria-label',item.title+' 상세 보기');
-      const imgs=card.querySelectorAll('img'), current=card.dataset.layer==='1'?1:0, nextLayer=1-current;
-      const incoming=imgs[nextLayer], outgoing=imgs[current];
-      incoming.alt=item.title; incoming.src=ready[i]?item.image:'';
-      if(!ready[i])incoming.removeAttribute('src');
-      incoming.style.transition=immediate?'none':''; outgoing.style.transition=''; incoming.classList.add('bbe-shown'); outgoing.classList.remove('bbe-shown');card.dataset.layer=String(nextLayer);
-      card.querySelector('.bbe-caption span').textContent=ready[i]?item.title:'이미지를 불러오지 못했습니다. 상세 보기';
-    });
-    stage.setAttribute('aria-labelledby','bbe-tab-0');
-    busy=false; schedule();
-    const start=((index+1)%pageCount())*size(); items.slice(start,start+size()).forEach(item=>imageOK(item.image));
-  }
-  function restore() { if(!locked||dialog.open)return;locked=false;document.documentElement.style.overflow=overflow;if(focusBefore?.isConnected)focusBefore.focus({preventScroll:true}); }
-  function close() { if(!dialog?.open)return;stop();clearInterval(refreshTimer);generation++;request?.abort();request=null;busy=false;dialog.close();restore(); }
-  function hideToday() { const date=new Date();date.setHours(24,0,0,0);try{localStorage.setItem(KEY,String(+date));}catch(_){}close(); }
-  function build() {
-    dialog=node('dialog');dialog.id='bbe';dialog.setAttribute('aria-labelledby','bbe-title');
-    const head=node('header','bbe-head'), title=node('h2','','뷰티블라썸 소식');title.id='bbe-title';
-    pauseButton=button('Ⅱ','bbe-icon','자동 전환 일시정지',()=>pause(!paused));
-    head.append(title,pauseButton,button('×','bbe-icon','팝업 닫기',close));
-    state=node('div','bbe-state','이벤트를 불러오는 중입니다.');state.setAttribute('role','status');
-    stage=node('div','bbe-stage');stage.id='bbe-stage';stage.setAttribute('role','tabpanel');
-    for(let i=0;i<3;i++) {
-      const card=node('a','bbe-card'), frame=node('div','bbe-image'), caption=node('div','bbe-caption');card.dataset.layer='0';card.target='_blank';card.rel='noopener';
-      frame.append(node('img'),node('img'));caption.append(node('span'));card.append(frame,caption);card.addEventListener('click',()=>pause(true));stage.append(card);cards.push(card);
-    }
-    tabs=node('div','bbe-tabs');tabs.setAttribute('role','tablist');tabs.setAttribute('aria-label','진료 안내');
-    renderTabs();
-    panels=sections.slice(1).map((section,i)=>{
-      const panel=node('div','bbe-static'),img=node('img'),error=node('div','bbe-static-error','이미지를 불러오지 못했습니다. 잠시 후 다시 열어 주세요.');
-      panel.id='bbe-panel-'+(i+1);panel.setAttribute('role','tabpanel');panel.setAttribute('aria-labelledby','bbe-tab-'+(i+1));panel.hidden=true;
-      img.alt='뷰티블라썸의원 '+section.title;img.width=809;img.height=477;error.hidden=true;
-      img.addEventListener('error',()=>{error.hidden=false;});img.addEventListener('load',()=>{error.hidden=true;});img.src=imageBase+section.file;
-      panel.append(img,error);return panel;
-    });
-    const foot=node('div','bbe-foot');foot.append(button('오늘 하루 보지 않기','','',hideToday),button('닫기','','',close));
-    dialog.append(head,state,stage,...panels,tabs,foot);document.body.append(dialog);
-    dialog.addEventListener('cancel',e=>{e.preventDefault();close();});dialog.addEventListener('close',restore);
-    dialog.addEventListener('keydown',e=>{
-      if(e.key!=='Tab')return;
-      const els=[...dialog.querySelectorAll('button,a[href]')].filter(el=>el.tabIndex>=0&&el.getClientRects().length&&!el.classList.contains('bbe-empty'));
-      if(e.shiftKey&&document.activeElement===els[0]){e.preventDefault();els.at(-1).focus();}
-      if(!e.shiftKey&&document.activeElement===els.at(-1)){e.preventDefault();els[0].focus();}
-    });
-    dialog.addEventListener('click',e=>{if(e.target!==dialog)return;const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)close();});
-    mobile.addEventListener('change',()=>{if(!dialog.open||!items.length)return;generation++;busy=false;index=0;if(activeTab===0)show(0,true);});
-    reduced.addEventListener('change',()=>{if(reduced.matches)pause(true);});
-    document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();else schedule();});
-    syncPause();
-  }
-  function valid(item) {
-    try { const img=new URL(item.image),href=new URL(item.href);return img.protocol==='https:'&&img.hostname==='cdn.imweb.me'&&href.origin==='https://beautyblossom.kr'&&/^\/22\/?$/.test(href.pathname)&&typeof item.title==='string'; } catch(_){return false;}
-  }
-  async function refresh() {
-    if(request || !dialog.open)return;
-    request=new AbortController();const controller=request,timeout=setTimeout(()=>controller.abort(),20000);
-    try {
-      const response=await fetch(ENDPOINT,{signal:controller.signal,cache:'no-cache',credentials:'omit'});
-      if(!response.ok)throw new Error('feed');
-      const data=await response.json(),next=Array.isArray(data.items)?data.items.filter(valid):[];
-      if(!next.length||data.truncated||next.length!==data.items.length)throw new Error('invalid_feed');
-      if(!dialog.open||request!==controller)return;
-      const changed=JSON.stringify(items)!==JSON.stringify(next);
-      items=next;syncView();
-      if(changed){preloads.clear();index=0;if(activeTab===0)await show(0,true);}else if(!busy)schedule();
-    } catch(_) {
-      if(!dialog.open||request!==controller)return;stop();generation++;busy=false;items=[];
-      syncView();
-      state.textContent='이벤트를 불러오지 못했습니다.';
-      const a=node('a','','이벤트 페이지 열기');a.href=SOURCE;a.target='_blank';a.rel='noopener';
-      state.append(a,button('다시 시도','','',()=>refresh()));
-    } finally { clearTimeout(timeout);if(request===controller)request=null; }
-  }
-  function open(respectHidden=false) {
-    if(!document.body){document.addEventListener('DOMContentLoaded',()=>open(respectHidden),{once:true});return;}
-    try{if(respectHidden&&Number(localStorage.getItem(KEY))>Date.now())return;}catch(_){}
-    if(!dialog)build();if(dialog.open)return;
-    focusBefore=document.activeElement;overflow=document.documentElement.style.overflow;
-    dialog.showModal();locked=true;document.documentElement.style.overflow='hidden';
-    state.textContent='이벤트를 불러오는 중입니다.';
-    items=[];index=0;activeTab=0;syncView();refresh();clearInterval(refreshTimer);refreshTimer=setInterval(()=>{if(!document.hidden)refresh();},60000);
-  }
-  window.BBEvents=Object.freeze({open,close});
-  if (true) open(true);
+(function(){
+ 'use strict';
+ if(window.BBEvents)return;
+ const countries={"KO":{"origin":"https://beautyblossom.kr","paths":["/20","/promotion","/22"],"boards":["post_card_b20250122f9a2883187db9","post_card_b20260923150b9c72c76c4","post_card_b20250122d2334b98253e7"],"lang":"ko","name":"한국","tabs":["공지사항","프로모션","이벤트","병원소개"],"heading":"뷰티블라썸 소식","loading":"소식을 불러오는 중입니다.","empty":"등록된 소식이 없습니다.","error":"소식을 불러오지 못했습니다.","view":"게시판 보기","retry":"다시 시도","close":"닫기","hide":"오늘 하루 보지 않기","pause":"자동 전환 일시정지","play":"자동 전환 재생","prev":"이전","next":"다음","imageError":"이미지를 불러오지 못했습니다. 상세 보기","floors":["6층 · 로비 & 라운지","8층 · 프리미엄 라운지"],"photoError":"사진을 불러오지 못했습니다."},"EN":{"origin":"https://en.beautyblossom.kr","paths":["/20","/promotion","/22"],"boards":["post_card_b20250228813f92088c757","post_card_b20260923743f6d6a9651e","post_card_b20250228fdc08f802b94a"],"lang":"en","name":"English","tabs":["Notices","Promotions","Events","Our clinic"],"heading":"Beauty Blossom news","loading":"Loading updates…","empty":"No updates at the moment.","error":"Updates could not be loaded.","view":"View all posts","retry":"Try again","close":"Close","hide":"Do not show again today","pause":"Pause slideshow","play":"Play slideshow","prev":"Previous","next":"Next","imageError":"Image unavailable. View details","floors":["6F · Lobby & lounge","8F · Premium lounge"],"photoError":"Photo unavailable."},"JP":{"origin":"https://jp.beautyblossom.kr","paths":["/20","/promotion","/22"],"boards":["post_card_b2025030496e991b5ee2c9","post_card_b202609231965f9b862b08","post_card_b2025030490b1c7dacdb70"],"lang":"ja","name":"日本語","tabs":["お知らせ","キャンペーン","イベント","院内紹介"],"heading":"ビューティーブロッサムからのお知らせ","loading":"読み込み中です。","empty":"現在、お知らせはありません。","error":"お知らせを読み込めませんでした。","view":"一覧を見る","retry":"再読み込み","close":"閉じる","hide":"今日は表示しない","pause":"自動切り替えを一時停止","play":"自動切り替えを再生","prev":"前へ","next":"次へ","imageError":"画像を読み込めませんでした。詳細を見る","floors":["6階 · ロビー＆ラウンジ","8階 · プレミアムラウンジ"],"photoError":"写真を読み込めませんでした。"},"CN":{"origin":"https://cn.beautyblossom.kr","paths":["/20","/promotion","/22"],"boards":["post_card_b20250306fa888d281fd48","post_card_b202609234541b46367367","post_card_b2025030620211496efbdf"],"lang":"zh-Hans","name":"简体中文","tabs":["公告","精选优惠","优惠活动","院内环境"],"heading":"丽朵皮肤科最新资讯","loading":"正在加载资讯…","empty":"暂无资讯。","error":"资讯加载失败。","view":"查看全部","retry":"重试","close":"关闭","hide":"今日不再显示","pause":"暂停自动切换","play":"播放自动切换","prev":"上一组","next":"下一组","imageError":"图片加载失败，查看详情","floors":["6楼 · 接待大厅与休息区","8楼 · 尊享休息区"],"photoError":"照片加载失败。"},"TW":{"origin":"https://tw.beautyblossom.kr","paths":["/20","/promotion","/22"],"boards":["post_card_b20251210f4b62e3ab6375","post_card_b20260923833fe2dd209ab","post_card_b2025121077f8c9740c448"],"lang":"zh-Hant-TW","name":"台灣","tabs":["公告事項","限定活動","精選活動","診所介紹"],"heading":"麗朵皮膚科最新消息","loading":"正在載入消息…","empty":"目前沒有新消息。","error":"無法載入消息。","view":"查看全部","retry":"重試","close":"關閉","hide":"今天不再顯示","pause":"暫停自動切換","play":"播放自動切換","prev":"上一組","next":"下一組","imageError":"無法載入圖片，查看詳情","floors":["6樓 · 接待大廳與休息區","8樓 · 尊榮休息區"],"photoError":"無法載入照片。"},"TH":{"origin":"https://www.beautyblossomth.kr","paths":["/notice/","/promotion/","/events/"],"boards":["post_card_b20250122f9a2883187db9","bb-promotions","post_card_b20250228fdc08f802b94a"],"lang":"th","name":"ไทย","tabs":["ประกาศ","โปรโมชั่น","กิจกรรม","แนะนำคลินิก"],"heading":"ข่าวสาร Beauty Blossom","loading":"กำลังโหลดข่าวสาร…","empty":"ยังไม่มีข่าวสารในขณะนี้","error":"ไม่สามารถโหลดข่าวสารได้","view":"ดูทั้งหมด","retry":"ลองอีกครั้ง","close":"ปิด","hide":"ไม่แสดงอีกในวันนี้","pause":"หยุดการเปลี่ยนภาพชั่วคราว","play":"เล่นภาพอัตโนมัติ","prev":"ก่อนหน้า","next":"ถัดไป","imageError":"ไม่สามารถโหลดรูปภาพได้ ดูรายละเอียด","floors":["ชั้น 6 · ล็อบบี้และเลานจ์","ชั้น 8 · พรีเมียมเลานจ์"],"photoError":"ไม่สามารถโหลดรูปภาพได้"},"HK":{"origin":"https://hk.beautyblossom.kr","paths":["/notice","/promotion","/events"],"boards":[],"lang":"zh-Hant-HK","name":"香港","tabs":["公告事項","精選優惠","最新活動","診所介紹"],"heading":"Beauty Blossom 最新消息","loading":"正在載入消息…","empty":"暫時沒有新消息。","error":"未能載入消息。","view":"查看全部","retry":"重試","close":"關閉","hide":"今天不再顯示","pause":"暫停自動切換","play":"播放自動切換","prev":"上一組","next":"下一組","imageError":"未能載入圖片，查看詳情","floors":["6樓 · 接待大堂及休息區","8樓 · 尊尚休息區"],"photoError":"未能載入相片。"}},options=window.BBPopupConfig||{},kinds=['notices','promotions','events'];
+ const endpoint=options.feedBase||'https://beautyblossom-popup-feed.beautyblossom.workers.dev';
+ const assets=options.assetsBase||'https://byeonghoyoo.github.io/beautyblossom-popup-demo-20260922/assets/interior/';
+ let country=Object.hasOwn(countries,options.country)?options.country:Object.keys(countries).find(k=>countries[k].origin===location.origin)||'KO';
+ let dialog,stage,state,tabs,tabButtons=[],pill,interior,pager,count,prev,next,pauseButton,countrySelect,title,hideButton,closeButtons=[];
+ let items=[],cards=[],index=0,active=2,generation=0,request,timer,refreshTimer,busy=false,focusBefore,overflow,locked=false;
+ const mobile=matchMedia('(max-width:700px)'),reduced=matchMedia('(prefers-reduced-motion:reduce)');
+ let paused=reduced.matches;
+ const preloads=new Map(),text=()=>countries[country],size=()=>mobile.matches?1:3,pages=()=>Math.ceil(items.length/size());
+ const source=()=>text().origin+text().paths[active];
+ const node=(tag,cls,value)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(value!==undefined)e.textContent=value;return e;};
+ function button(value,cls,label,fn){const b=node('button',cls,value);b.type='button';if(label){b.title=label;b.setAttribute('aria-label',label);}b.addEventListener('click',fn);return b;}
+ function stop(){clearTimeout(timer);timer=null;}
+ function invalidate(){stop();generation++;busy=false;request?.abort();request=null;}
+ function schedule(){stop();if(dialog?.open&&active<3&&!paused&&!document.hidden&&!busy&&pages()>1)timer=setTimeout(()=>show(index+1),1800);}
+ function syncPause(){pauseButton.textContent=paused?'▶':'Ⅱ';pauseButton.setAttribute('aria-pressed',String(paused));pauseButton.setAttribute('aria-label',paused?text().play:text().pause);pauseButton.title=pauseButton.getAttribute('aria-label');}
+ function pause(value){paused=value;syncPause();schedule();}
+ function imageOK(url){
+  if(!url)return Promise.resolve(false);
+  if(!preloads.has(url))preloads.set(url,new Promise(resolve=>{const im=new Image();let settled=false;const done=value=>{if(settled)return;settled=true;clearTimeout(t);if(!value)preloads.delete(url);resolve(value);};const t=setTimeout(()=>done(false),8000);im.onload=()=>done(im.naturalWidth>0);im.onerror=()=>done(false);im.src=url;}));
+  return preloads.get(url);
+ }
+ function syncView(){
+  const live=active<3;stage.hidden=!live||!items.length;state.hidden=!live||!!items.length;interior.hidden=live;pager.hidden=!live||!items.length;
+  pauseButton.hidden=!live||pages()<2;prev.disabled=next.disabled=pages()<2;
+  count.textContent=items.length?`${index*size()+1}–${Math.min((index+1)*size(),items.length)} / ${items.length}`:'';
+  tabButtons.forEach((b,i)=>{b.setAttribute('aria-selected',String(i===active));b.tabIndex=i===active?0:-1;});
+  pill.style.transform=`translateX(${active*100}%)`;
+  stage.setAttribute('aria-labelledby',`bbe-tab-${active}`);state.setAttribute('aria-labelledby',`bbe-tab-${active}`);
+ }
+ function message(key,link=false){
+  state.replaceChildren(node('p','',text()[key]));
+  if(link){const a=node('a','',text().view);a.href=source();a.target='_blank';a.rel='noopener';state.append(a);}
+  if(key==='error')state.append(button(text().retry,'bbe-retry','',()=>refresh()));
+ }
+ function applyLocale(){
+  dialog.lang=text().lang;dialog.dataset.country=country;title.textContent=text().heading;
+  tabButtons.forEach((b,i)=>{b.textContent=text().tabs[i];});
+  closeButtons.forEach(b=>{b.setAttribute('aria-label',text().close);b.title=text().close;if(b.className!=='bbe-icon')b.textContent=text().close;});
+  hideButton.textContent=text().hide;prev.setAttribute('aria-label',text().prev);next.setAttribute('aria-label',text().next);
+  if(countrySelect)countrySelect.value=country;
+  interior.querySelectorAll('figure').forEach((f,i)=>{f.querySelector('figcaption').textContent=text().floors[i];f.querySelector('img').alt=text().floors[i];f.querySelector('.bbe-photo-error').textContent=text().photoError;});
+  syncPause();
+ }
+ function selectTab(value,focus=false){
+  invalidate();active=(value+4)%4;items=[];index=0;preloads.clear();syncView();
+  if(active<3){message('loading');refresh();}
+  if(focus)tabButtons[active].focus();
+ }
+ function setCountry(value){if(!Object.hasOwn(countries,value))return false;if(value===country)return true;invalidate();country=value;if(dialog){applyLocale();selectTab(active);}return true;}
+ async function show(value,immediate=false){
+  stop();if(!items.length||active===3)return;
+  const token=++generation;busy=true;
+  const target=(value+pages())%pages(),row=items.slice(target*size(),target*size()+size());
+  const ready=await Promise.all(row.map(item=>imageOK(item.image)));
+  if(token!==generation||!dialog.open)return;
+  index=target;
+  cards.forEach((card,i)=>{
+   const item=row[i];card.classList.toggle('bbe-empty',!item);
+   if(!item){card.removeAttribute('href');card.tabIndex=-1;card.setAttribute('aria-hidden','true');return;}
+   card.tabIndex=0;card.removeAttribute('aria-hidden');card.href=item.href;card.setAttribute('aria-label',item.title||text().view);
+   const imgs=card.querySelectorAll('img'),current=card.dataset.layer==='1'?1:0,incoming=imgs[1-current],outgoing=imgs[current];
+   incoming.alt=item.title;outgoing.alt='';incoming.style.transition=immediate?'none':'';outgoing.style.transition=immediate?'none':'';
+   if(ready[i])incoming.src=item.image;else incoming.removeAttribute('src');
+   incoming.classList.toggle('bbe-shown',ready[i]);outgoing.classList.remove('bbe-shown');card.dataset.layer=String(1-current);
+   const fallback=card.querySelector('.bbe-card-fallback');fallback.hidden=ready[i];fallback.textContent=item.title||text().view;
+   card.querySelector('.bbe-caption span').textContent=ready[i]||!item.image?item.title:text().imageError;
+  });
+  busy=false;syncView();schedule();
+  const start=((index+1)%pages())*size();items.slice(start,start+size()).forEach(item=>imageOK(item.image));
+ }
+ function valid(item){
+  if(!item||typeof item.title!=='string'||typeof item.image!=='string'||typeof item.href!=='string')return false;
+  try{
+   const href=new URL(item.href),base=text().paths[active].replace(/\/$/,'');
+   if(href.origin!==text().origin||href.username||href.password)return false;
+   const p=href.pathname.replace(/\/$/,'');
+   if(country==='HK'?!p.startsWith(base+'/'):country==='TH'&&active===2?!['/events','/events/detail'].includes(p):p!==base&&!(country==='TH'&&active===0&&p==='/20'))return false;
+   if(item.image){const img=new URL(item.image);if(img.protocol!=='https:'||img.username||img.password)return false;}
+   return true;
+  }catch{return false;}
+ }
+ async function refresh(){
+  if(request||!dialog?.open||active===3)return;
+  const controller=new AbortController();request=controller;const expectedCountry=country,expectedTab=active;
+  const timeout=setTimeout(()=>controller.abort(),25000);
+  try{
+   const response=await fetch(`${endpoint}/${kinds[active]}?country=${country}`,{signal:controller.signal,cache:'no-cache',credentials:'omit'});
+   if(!response.ok)throw new Error('feed');const data=await response.json();
+   if(!dialog.open||request!==controller||country!==expectedCountry||active!==expectedTab)return;
+   if(data.country!==country||data.kind!==kinds[active]||data.truncated||!Array.isArray(data.items)||!data.items.every(valid))throw new Error('invalid_feed');
+   const changed=JSON.stringify(items)!==JSON.stringify(data.items);items=data.items;
+   if(changed){generation++;busy=false;preloads.clear();index=0;}
+   if(!items.length){stop();message('empty',true);syncView();}
+   else{if(changed)await show(0,true);else{syncView();schedule();}}
+  }catch{
+   if(!dialog.open||request!==controller)return;stop();generation++;busy=false;items=[];message('error',true);syncView();
+  }finally{clearTimeout(timeout);if(request===controller)request=null;}
+ }
+ function restore(){if(!locked||dialog.open)return;locked=false;document.documentElement.style.overflow=overflow;if(focusBefore?.isConnected)focusBefore.focus({preventScroll:true});}
+ function close(){if(!dialog?.open)return;invalidate();clearInterval(refreshTimer);dialog.close();restore();}
+ const key=()=>country==='KO'?'bb-events-v2-hideUntil':`bb-events-v2-hideUntil-${country}`;
+ function hideToday(){const date=new Date();date.setHours(24,0,0,0);try{localStorage.setItem(key(),String(+date));}catch{}close();}
+ function build(){
+  dialog=node('dialog');dialog.id='bbe';dialog.setAttribute('aria-labelledby','bbe-title');
+  const head=node('header','bbe-head');title=node('h2');title.id='bbe-title';
+  pauseButton=button('Ⅱ','bbe-icon','',()=>pause(!paused));const closeTop=button('×','bbe-icon','',close);closeButtons.push(closeTop);head.append(title,pauseButton,closeTop);
+  const preview=node('div','bbe-preview');preview.hidden=!options.preview;
+  if(options.preview){const label=node('label','','국가별 미리보기');countrySelect=node('select');countrySelect.id='bbe-country';label.htmlFor=countrySelect.id;for(const [k,c] of Object.entries(countries)){const o=node('option','',c.name);o.value=k;countrySelect.append(o);}countrySelect.addEventListener('change',()=>setCountry(countrySelect.value));preview.append(label,countrySelect);}
+  state=node('div','bbe-state');state.setAttribute('role','status');
+  stage=node('div','bbe-stage');stage.id='bbe-stage';stage.setAttribute('role','tabpanel');
+  for(let i=0;i<3;i++){const card=node('a','bbe-card'),frame=node('div','bbe-image'),caption=node('div','bbe-caption');card.dataset.layer='0';card.target='_blank';card.rel='noopener';frame.append(node('span','bbe-card-fallback'),node('img'),node('img'));caption.append(node('span'));card.append(frame,caption);card.addEventListener('click',()=>pause(true));stage.append(card);cards.push(card);}
+  pager=node('div','bbe-pager');prev=button('‹','bbe-step','',()=>{pause(true);show(index-1);});next=button('›','bbe-step','',()=>{pause(true);show(index+1);});count=node('span');pager.append(prev,count,next);
+  interior=node('div','bbe-interior');interior.id='bbe-interior';interior.setAttribute('role','tabpanel');interior.setAttribute('aria-labelledby','bbe-tab-3');
+  ['6f-lounge.webp','8f-reception.webp'].forEach(file=>{const f=node('figure'),img=node('img'),error=node('span','bbe-photo-error');error.hidden=true;img.width=1200;img.height=900;img.loading='lazy';img.src=assets+file;img.addEventListener('error',()=>{error.hidden=false;});img.addEventListener('load',()=>{error.hidden=true;});f.append(img,error,node('figcaption'));interior.append(f);});
+  tabs=node('div','bbe-tabs');tabs.setAttribute('role','tablist');pill=node('span','bbe-pill');pill.setAttribute('aria-hidden','true');tabs.append(pill);
+  for(let i=0;i<4;i++){const b=button('','bbe-tab','',()=>selectTab(i));b.id=`bbe-tab-${i}`;b.setAttribute('role','tab');b.setAttribute('aria-controls',i===3?'bbe-interior':'bbe-stage');b.addEventListener('keydown',e=>{let next;if(e.key==='ArrowRight')next=i+1;if(e.key==='ArrowLeft')next=i-1;if(e.key==='Home')next=0;if(e.key==='End')next=3;if(next!==undefined){e.preventDefault();selectTab(next,true);}});tabs.append(b);tabButtons.push(b);}
+  const foot=node('footer','bbe-foot');hideButton=button('','','',hideToday);const closeFoot=button('','','',close);closeButtons.push(closeFoot);foot.append(hideButton,closeFoot);
+  dialog.append(head,preview,state,stage,interior,pager,tabs,foot);document.body.append(dialog);applyLocale();
+  dialog.addEventListener('cancel',e=>{e.preventDefault();close();});dialog.addEventListener('close',()=>{if(dialog.open)return;invalidate();clearInterval(refreshTimer);restore();});
+  dialog.addEventListener('click',e=>{if(e.target!==dialog)return;const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)close();});
+  dialog.addEventListener('focusin',e=>{if(e.target.closest('.bbe-card'))pause(true);});
+  mobile.addEventListener('change',()=>{if(dialog.open&&active<3&&items.length){generation++;busy=false;index=0;show(0,true);}});
+  reduced.addEventListener('change',()=>{if(reduced.matches)pause(true);});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();else{schedule();refresh();}});
+ }
+ function open(respectHidden=false){
+  if(!document.body){document.addEventListener('DOMContentLoaded',()=>open(respectHidden),{once:true});return;}
+  try{if(respectHidden&&Number(localStorage.getItem(key()))>Date.now())return;}catch{}
+  if(!dialog)build();if(dialog.open)return;
+  focusBefore=document.activeElement;overflow=document.documentElement.style.overflow;dialog.showModal();locked=true;document.documentElement.style.overflow='hidden';
+  selectTab(2);clearInterval(refreshTimer);refreshTimer=setInterval(()=>{if(!document.hidden)refresh();},60000);
+ }
+ window.BBEvents=Object.freeze({open,close,setCountry});
+ if(true)open(true);
 }());
 
 </script>
