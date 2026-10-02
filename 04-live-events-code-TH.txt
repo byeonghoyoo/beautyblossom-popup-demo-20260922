@@ -101,7 +101,7 @@
 
 /* Hospital introduction: two flat photo folders and a live location card. */
 #bbe[data-view="clinic"]{width:min(1260px,calc(100vw - 32px));}
-#bbe .bbe-interior{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start;gap:20px;padding:6px 20px 20px}
+#bbe .bbe-interior{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:stretch;gap:20px;padding:6px 20px 20px}
 #bbe .bbe-folders{min-width:0;padding:18px;border:1px solid #fff9;border-radius:20px;background:linear-gradient(145deg,#fffafcc9,#f7e9f08c)}
 #bbe .bbe-folder-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;padding:0 3px}
 #bbe .bbe-folder-heading strong{font-size:17px;font-weight:800;color:#443c46}
@@ -118,10 +118,15 @@
 #bbe .bbe-folder-cover::before{content:"";position:absolute;top:-10px;left:-1px;width:40%;height:12px;clip-path:polygon(0 0,90% 0,100% 100%,0 100%);border-radius:9px 10px 0 0;background:#f6ddea}
 #bbe .bbe-folder-number{flex:0 0 auto;font-size:31px;line-height:1;font-weight:800;letter-spacing:-.05em}
 #bbe .bbe-folder-name{min-width:0;flex:1;font-size:14px;line-height:1.4;font-weight:700;word-break:keep-all}
-#bbe .bbe-folder-arrow{display:grid;place-items:center;flex:0 0 29px;height:29px;border:1px solid #fff9;border-radius:50%;background:#ffffff66;font-size:21px;line-height:1;transition:transform .2s ease}
+/* Match the raised pink pager button; rotate the chevron, not the lighting. */
+#bbe .bbe-folder-arrow{display:grid;place-items:center;flex:0 0 38px;width:38px;height:38px;border:1px solid #fff8fc;border-radius:50%;color:#713c54;background:linear-gradient(155deg,#fff8fc 0%,#f8deeb 45%,#edbcd3 100%);box-shadow:inset 0 2px 2px #fff,inset 0 -2px 3px #bf789b30,0 3px 0 #c991ab5c,0 5px 9px #75415b26;font-size:0;transition:transform .16s ease,box-shadow .16s ease}
+#bbe .bbe-folder-arrow::before{content:"";width:10px;height:10px;border-right:2.5px solid currentColor;border-bottom:2.5px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform .2s ease}
+#bbe .bbe-folder-toggle:hover .bbe-folder-arrow{background:linear-gradient(155deg,#fff,#f5d4e5 45%,#eab0ce);transform:translateY(-1px)}
+#bbe .bbe-folder-toggle:active .bbe-folder-arrow{transform:translateY(1px);box-shadow:inset 0 1px 3px #aa67872b,0 1px 0 #c991ab5c,0 2px 4px #75415b20}
+#bbe .bbe-folder-toggle:focus-visible{outline:3px solid #986078;outline-offset:4px}
 #bbe .bbe-folder-toggle:hover .bbe-photo{transform:translateY(-7px) rotate(0)}
 #bbe .bbe-folder-toggle:active{transform:translateY(1px)}
-#bbe .bbe-folder-toggle[aria-expanded=true] .bbe-folder-arrow{transform:rotate(180deg)}
+#bbe .bbe-folder-toggle[aria-expanded=true] .bbe-folder-arrow::before{transform:translateY(2px) rotate(225deg)}
 #bbe .bbe-folder-toggle[aria-expanded=true]{height:auto;aspect-ratio:1.2}
 #bbe .bbe-folder-toggle[aria-expanded=true] .bbe-photo{top:29px;bottom:55px;height:auto;transform:none;border-radius:10px}
 #bbe .bbe-folder-toggle[aria-expanded=true] .bbe-photo img{object-position:center!important}
@@ -129,7 +134,7 @@
 #bbe .bbe-folders figure:nth-of-type(2) .bbe-folder-back{background:#dcd7e9}
 #bbe .bbe-folders figure:nth-of-type(2) .bbe-folder-cover{background:linear-gradient(150deg,#eeebf8,#d6cfe8);color:#40364f}
 #bbe .bbe-folders figure:nth-of-type(2) .bbe-folder-cover::before{background:#eeebf8}
-#bbe .bbe-location{min-width:0;overflow:hidden;border:1px solid #ffffffed;border-radius:20px;background:#fffafc;box-shadow:0 5px 14px #51374712}
+#bbe .bbe-location{display:flex;flex-direction:column;min-width:0;overflow:hidden;border:1px solid #ffffffed;border-radius:20px;background:#fffafc;box-shadow:0 5px 14px #51374712}
 #bbe .bbe-location-head{position:relative;padding:22px 24px 20px;background:radial-gradient(ellipse at 100% 0,#f9ddeb,transparent 72%),linear-gradient(140deg,#fff,#fcf2f7)}
 #bbe .bbe-transit{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#6d5b69}
 #bbe .bbe-transit i{width:19px;height:19px;display:grid;place-items:center;border-radius:50%;font:700 11px/1 Arial;color:#fff;background:#26a55c;font-style:normal}
@@ -145,16 +150,16 @@
 #bbe .bbe-cube-face:nth-child(3){transform:rotateX(180deg) translateZ(var(--cube-depth))}
 #bbe .bbe-cube-face:nth-child(4){transform:rotateX(270deg) translateZ(var(--cube-depth));background:linear-gradient(150deg,#594154,#362b3c);color:#fff;border-color:#796070}
 @keyframes bbe-cube-roll{0%,20%{transform:translateZ(calc(-1 * var(--cube-depth))) rotateX(0)}25%,45%{transform:translateZ(calc(-1 * var(--cube-depth))) rotateX(-90deg)}50%,70%{transform:translateZ(calc(-1 * var(--cube-depth))) rotateX(-180deg)}75%,95%{transform:translateZ(calc(-1 * var(--cube-depth))) rotateX(-270deg)}100%{transform:translateZ(calc(-1 * var(--cube-depth))) rotateX(-360deg)}}
-#bbe .bbe-map{position:relative;height:254px;background:#f2eee9;border-block:1px solid #efe5eb}
-#bbe .bbe-map iframe{display:block;width:100%;height:100%;border:0;background:#f3f0eb}
+#bbe .bbe-map{position:relative;flex:1 0 254px;min-height:254px;background:#f2eee9;border-block:1px solid #efe5eb}
+#bbe .bbe-map iframe{position:absolute;inset:0;display:block;width:100%;height:100%;border:0;background:#f3f0eb}
 #bbe .bbe-location-foot{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 #bbe .bbe-location-address{margin:0;font-size:13px;line-height:1.65;color:#625360;word-break:keep-all}
 #bbe .bbe-location-link{display:flex;align-items:center;gap:12px;flex:0 0 auto;border:1px solid #e9d5e0;border-radius:999px;padding:9px 12px;background:#fff;color:#54404f;font-size:12px;font-weight:700;box-shadow:0 2px 5px #7250680d}
 #bbe .bbe-location-link:hover{background:#f9e9f1}
 @media(min-width:951px){#bbe .bbe-folder-toggle{height:216px}#bbe .bbe-folder-toggle .bbe-photo{height:174px}#bbe .bbe-folder-cover{top:122px}}
 @media(min-width:701px) and (max-width:950px){#bbe .bbe-interior{gap:12px;padding:4px 14px 16px}#bbe .bbe-folders{padding:12px}#bbe .bbe-folder-cover{padding:12px;gap:8px}#bbe .bbe-folder-name{font-size:12px}#bbe .bbe-location-head{padding:20px 16px}#bbe .bbe-location-foot{align-items:flex-start;flex-direction:column;gap:8px}}
-@media(max-width:700px){#bbe[data-view=clinic]{width:min(440px,calc(100vw - 24px));min-width:0}#bbe .bbe-interior{grid-template-columns:1fr;padding:4px 10px 14px;gap:14px}#bbe .bbe-folders{padding:14px}#bbe .bbe-folder-heading strong{font-size:16px}#bbe .bbe-folder-hint{font-size:11px}#bbe .bbe-folder-toggle{height:145px}#bbe .bbe-folder-toggle .bbe-photo{height:106px}#bbe .bbe-folder-cover{top:78px;padding:13px;gap:9px}#bbe .bbe-folder-number{font-size:28px}#bbe .bbe-folder-name{font-size:12px}#bbe .bbe-location-head{padding:20px}#bbe .bbe-location h3{font-size:29px}#bbe .bbe-cube-scene{--cube-h:56px;--cube-depth:28px}#bbe .bbe-cube-face{font-size:28px;padding:0 13px}#bbe .bbe-location-foot{padding:14px;align-items:flex-start;flex-direction:column;gap:10px}#bbe .bbe-map{height:250px}}
-@media(prefers-reduced-motion:reduce){#bbe .bbe-cube{animation:none!important}#bbe .bbe-folder-toggle .bbe-photo,#bbe .bbe-folder-cover,#bbe .bbe-folder-arrow{transition:none}#bbe .bbe-folder-toggle:hover .bbe-photo{transform:none}}
+@media(max-width:700px){#bbe[data-view=clinic]{width:min(440px,calc(100vw - 24px));min-width:0}#bbe .bbe-interior{grid-template-columns:1fr;padding:4px 10px 14px;gap:14px}#bbe .bbe-folders{padding:14px}#bbe .bbe-folder-heading strong{font-size:16px}#bbe .bbe-folder-hint{font-size:11px}#bbe .bbe-folder-toggle{height:145px}#bbe .bbe-folder-toggle .bbe-photo{height:106px}#bbe .bbe-folder-cover{top:78px;padding:13px;gap:9px}#bbe .bbe-folder-number{font-size:28px}#bbe .bbe-folder-name{font-size:12px}#bbe .bbe-location-head{padding:20px}#bbe .bbe-location h3{font-size:29px}#bbe .bbe-cube-scene{--cube-h:56px;--cube-depth:28px}#bbe .bbe-cube-face{font-size:28px;padding:0 13px}#bbe .bbe-location-foot{padding:14px;align-items:flex-start;flex-direction:column;gap:10px}#bbe .bbe-map{flex:0 0 250px;min-height:250px;height:250px}}
+@media(prefers-reduced-motion:reduce){#bbe .bbe-cube{animation:none!important}#bbe .bbe-folder-toggle .bbe-photo,#bbe .bbe-folder-cover,#bbe .bbe-folder-arrow,#bbe .bbe-folder-arrow::before{transition:none}#bbe .bbe-folder-toggle:hover .bbe-photo{transform:none}}
 @media(max-width:700px){#bbe .bbe-folder-heading{flex-wrap:wrap;gap:3px 12px}#bbe:lang(en) .bbe-cube-face,#bbe:lang(th) .bbe-cube-face{font-size:23px}}
 
 </style>
