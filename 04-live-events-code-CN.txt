@@ -70,7 +70,7 @@ window.BBPopupConfig={"country":"CN"};
  const endpoint=options.feedBase||'https://beautyblossom-popup-feed.beautyblossom.workers.dev';
  const assets=options.assetsBase||'https://byeonghoyoo.github.io/beautyblossom-popup-demo-20260922/assets/interior/';
  let country=Object.hasOwn(countries,options.country)?options.country:Object.keys(countries).find(k=>countries[k].origin===location.origin)||'KO';
- let dialog,stage,state,tabs,tabButtons=[],pill,interior,pager,count,prev,next,pauseButton,countrySelect,title,hideButton,closeButtons=[];
+ let dialog,stage,state,tabs,tabButtons=[],pill,interior,pager,count,prev,next,countrySelect,title,hideButton,closeButtons=[];
  let items=[],cards=[],index=0,active=2,generation=0,request,timer,refreshTimer,busy=false,focusBefore,overflow,locked=false;
  const mobile=matchMedia('(max-width:700px)'),reduced=matchMedia('(prefers-reduced-motion:reduce)');
  let paused=reduced.matches;
@@ -83,8 +83,7 @@ window.BBPopupConfig={"country":"CN"};
  function invalidate(){stop();generation++;busy=false;request=null;}
  function abortFeeds(){pendingFeeds.forEach(entry=>entry.controller.abort());pendingFeeds.clear();}
  function schedule(){stop();if(!dialog?.open||paused||document.hidden||busy)return;if(active===3)timer=setTimeout(advanceInterior,1000);else if(pages()>1)timer=setTimeout(()=>show(index+1),1800);}
- function syncPause(){pauseButton.textContent=paused?'▶':'Ⅱ';pauseButton.setAttribute('aria-pressed',String(paused));pauseButton.setAttribute('aria-label',paused?text().play:text().pause);pauseButton.title=pauseButton.getAttribute('aria-label');}
- function pause(value){paused=value;syncPause();schedule();}
+ function pause(value){paused=value;schedule();}
  function imageOK(url,priority='low'){
   if(!url)return Promise.resolve(false);
   if(!preloads.has(url)){
@@ -117,7 +116,7 @@ window.BBPopupConfig={"country":"CN"};
  }
  function syncView(){
   const live=active<3;stage.hidden=!live||!items.length;state.hidden=!live||!!items.length;interior.hidden=live;pager.hidden=!live||!items.length;
-  pauseButton.hidden=live&&pages()<2;prev.disabled=next.disabled=pages()<2;
+  prev.disabled=next.disabled=pages()<2;
   count.textContent=items.length?`${index*size()+1}–${Math.min((index+1)*size(),items.length)} / ${items.length}`:'';
   tabButtons.forEach((b,i)=>{b.setAttribute('aria-selected',String(i===active));b.tabIndex=i===active?0:-1;});
   pill.style.transform=`translateX(${active*100}%)`;
@@ -135,10 +134,9 @@ window.BBPopupConfig={"country":"CN"};
   hideButton.textContent=text().hide;prev.setAttribute('aria-label',text().prev);next.setAttribute('aria-label',text().next);
   if(countrySelect)countrySelect.value=country;
   interior.querySelectorAll('figure').forEach((f,i)=>{f.querySelector('figcaption').textContent=text().floors[i];f.querySelectorAll('img').forEach(img=>{img.alt=img.classList.contains('bbe-shown')?text().floors[i]:'';});f.querySelector('.bbe-photo-error').textContent=text().photoError;});
-  syncPause();
  }
  function selectTab(value,focus=false){
-  invalidate();active=(value+4)%4;items=[];index=0;syncView();
+  invalidate();active=(value+4)%4;items=[];index=0;paused=reduced.matches;syncView();
   if(active<3){message('loading');refresh();}else{warmInterior();warmTabs();schedule();}
   if(focus)tabButtons[active].focus();
  }
@@ -216,7 +214,7 @@ window.BBPopupConfig={"country":"CN"};
  function build(){
   dialog=node('dialog');dialog.id='bbe';dialog.setAttribute('aria-labelledby','bbe-title');
   const head=node('header','bbe-head');title=node('h2');title.id='bbe-title';
-  pauseButton=button('Ⅱ','bbe-icon','',()=>pause(!paused));const closeTop=button('×','bbe-icon','',close);closeButtons.push(closeTop);head.append(title,pauseButton,closeTop);
+  const closeTop=button('×','bbe-icon','',close);closeButtons.push(closeTop);head.append(title,closeTop);
   const preview=node('div','bbe-preview');preview.hidden=!options.preview;
   if(options.preview){const label=node('label','','국가별 미리보기');countrySelect=node('select');countrySelect.id='bbe-country';label.htmlFor=countrySelect.id;for(const [k,c] of Object.entries(countries)){const o=node('option','',c.name);o.value=k;countrySelect.append(o);}countrySelect.addEventListener('change',()=>setCountry(countrySelect.value));preview.append(label,countrySelect);}
   state=node('div','bbe-state');state.setAttribute('role','status');
