@@ -70,13 +70,101 @@
 #bbe .bbe-state p,#bbe .bbe-state a,#bbe .bbe-photo-error{font-size:16px}
 @media(max-width:700px){#bbe h2{font-size:28px;line-height:1.25}#bbe .bbe-head{align-items:flex-start}#bbe .bbe-preview label{font-size:14px}#bbe .bbe-caption{height:60px;font-size:14px;line-height:21px}#bbe .bbe-pager>span{font-size:14px}#bbe .bbe-interior figcaption{font-size:16px}}
 
+/* Immediate, asset-free loading preview; same geometry as the incoming cards. */
+#bbe .bbe-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+#bbe .bbe-state.bbe-loading{padding:4px 16px 0;min-height:0}
+#bbe .bbe-loading-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+#bbe .bbe-loading-card{min-width:0;overflow:hidden;border:1px solid #ffffffd9;border-radius:12px;background:#fff9fc;box-shadow:0 5px 14px #51374712}
+#bbe .bbe-loading-image{position:relative;aspect-ratio:4/5;display:grid;place-items:center;overflow:hidden;background:radial-gradient(ellipse at 28% 18%,#fff8fc 0%,transparent 62%),linear-gradient(140deg,#f6e1ec,#ecd7e5 52%,#f8edf2)}
+#bbe .bbe-loading-card:nth-child(2) .bbe-loading-image{background:radial-gradient(ellipse at 70% 30%,#fff 0%,transparent 64%),linear-gradient(140deg,#f2e8f2,#edd8e5)}
+#bbe .bbe-loading-card:nth-child(3) .bbe-loading-image{background:radial-gradient(ellipse at 22% 70%,#fff5fa 0%,transparent 60%),linear-gradient(140deg,#f6e4eb,#ead9e5)}
+#bbe .bbe-loading-image::after,#bbe .bbe-pending .bbe-image::after{content:"";position:absolute;inset:-20%;background:linear-gradient(110deg,transparent 32%,#ffffff91 48%,#ffffffc9 50%,#ffffff70 52%,transparent 68%);transform:translateX(-100%);animation:bbe-sheen 1.8s cubic-bezier(.4,0,.2,1) infinite;animation-delay:var(--bbe-delay,0s);pointer-events:none}
+#bbe .bbe-loading-brand{position:relative;color:#976c83;font-size:clamp(11px,1.2vw,16px);font-weight:700;letter-spacing:.18em;animation:bbe-breathe 2.2s ease-in-out infinite;animation-delay:var(--bbe-delay,0s)}
+#bbe .bbe-loading-caption{height:66px;padding:17px 12px;display:grid;gap:8px;align-content:center}
+#bbe .bbe-loading-caption span{display:block;height:7px;border-radius:6px;background:#ecdbe4;width:86%}
+#bbe .bbe-loading-caption span+span{width:57%;background:#f1e6ec}
+#bbe .bbe-loading-pager{height:40px}
+#bbe .bbe-pending .bbe-image{background:linear-gradient(140deg,#f8eaf1,#efdeea)}
+@keyframes bbe-sheen{0%,10%{transform:translateX(-100%)}90%,100%{transform:translateX(100%)}}
+@keyframes bbe-breathe{0%,100%{opacity:.55;transform:translateY(1px)}50%{opacity:.95;transform:translateY(-1px)}}
+@media(max-width:700px){#bbe .bbe-state.bbe-loading{padding:2px 10px 0}#bbe .bbe-loading-grid{grid-template-columns:minmax(0,1fr);gap:0}#bbe .bbe-loading-card:nth-child(n+2){display:none}#bbe .bbe-loading-caption{height:60px}#bbe .bbe-loading-brand{font-size:14px}}
+@media(prefers-reduced-motion:reduce){#bbe .bbe-loading-image::after,#bbe .bbe-pending .bbe-image::after,#bbe .bbe-loading-brand{animation:none}#bbe .bbe-loading-brand{opacity:.8}}
+
+/* Persistent raised navigation controls: visible before hover, press feedback. */
+#bbe .bbe-pager{height:48px;gap:16px}
+#bbe .bbe-step{width:38px;height:38px;flex:0 0 38px;display:grid;place-items:center;padding:0;border:1px solid #fff8fc;border-radius:50%;color:#713c54;font:600 23px/1 Arial,sans-serif;background:linear-gradient(155deg,#fff8fc 0%,#f8deeb 45%,#edbcd3 100%);text-shadow:0 1px 0 #ffffffbd;box-shadow:inset 0 2px 2px #fff,inset 0 -2px 3px #bf789b30,0 3px 0 #c991ab5c,0 5px 9px #75415b26;transition:transform .16s ease,box-shadow .16s ease}
+#bbe .bbe-step:hover:not(:disabled){background:linear-gradient(155deg,#fff,#f5d4e5 45%,#eab0ce);transform:translateY(-1px);box-shadow:inset 0 2px 2px #fff,inset 0 -2px 3px #bf789b30,0 4px 0 #c991ab5c,0 6px 11px #75415b2b}
+#bbe .bbe-step:active:not(:disabled){transform:translateY(2px);box-shadow:inset 0 1px 3px #aa67872b,0 1px 0 #c991ab5c,0 2px 4px #75415b20}
+#bbe .bbe-step:disabled{opacity:.4}
+#bbe .bbe-loading-pager{height:48px}
+@media(prefers-reduced-motion:reduce){#bbe .bbe-step{transition:none}#bbe .bbe-step:hover:not(:disabled),#bbe .bbe-step:active:not(:disabled){transform:none}}
+
+/* Hospital introduction: two flat photo folders and a live location card. */
+#bbe[data-view="clinic"]{width:min(1260px,calc(100vw - 32px));}
+#bbe .bbe-interior{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start;gap:20px;padding:6px 20px 20px}
+#bbe .bbe-folders{min-width:0;padding:18px;border:1px solid #fff9;border-radius:20px;background:linear-gradient(145deg,#fffafcc9,#f7e9f08c)}
+#bbe .bbe-folder-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;padding:0 3px}
+#bbe .bbe-folder-heading strong{font-size:17px;font-weight:800;color:#443c46}
+#bbe .bbe-folder-hint{font-size:12px;color:#736370}
+#bbe .bbe-folders figure{overflow:visible;background:none;border:0;border-radius:0;box-shadow:none;margin:0 0 12px}
+#bbe .bbe-folders figure:last-child{margin-bottom:0}
+#bbe .bbe-folder-toggle{position:relative;display:block;width:100%;height:166px;border-radius:16px;text-align:left;isolation:isolate;outline-offset:4px}
+#bbe .bbe-folder-back{position:absolute;inset:21px 0 0;border-radius:0 15px 15px;background:#eed2e0;box-shadow:inset 0 1px 0 #fff9}
+#bbe .bbe-folder-back::before{content:"";position:absolute;left:0;top:-18px;width:39%;height:24px;background:inherit;border-radius:11px 17px 0 0;clip-path:polygon(0 0,88% 0,100% 100%,0 100%)}
+#bbe .bbe-folder-toggle .bbe-photo{position:absolute;inset:29px 14px auto;height:122px;aspect-ratio:auto;border:3px solid #fff;border-radius:10px;background:#f6e8ef;box-shadow:0 3px 10px #825b7326;transform:translateY(0) rotate(-1.2deg);transition:transform .22s cubic-bezier(.16,1,.3,1)}
+#bbe .bbe-folders figure:nth-of-type(2) .bbe-folder-toggle .bbe-photo{transform:rotate(1.2deg)}
+#bbe .bbe-folder-toggle .bbe-photo img{object-position:center 48%}
+#bbe .bbe-folder-cover{position:absolute;inset:94px 0 0;display:flex;align-items:center;gap:12px;padding:16px 18px;border:1px solid #ffffffb8;border-radius:3px 12px 15px 15px;background:linear-gradient(160deg,#f7dfeb,#ecc4d9);box-shadow:0 5px 9px #90627a1a,inset 0 1px 0 #fff9;color:#493344;transition:transform .2s ease}
+#bbe .bbe-folder-cover::before{content:"";position:absolute;top:-10px;left:-1px;width:40%;height:12px;clip-path:polygon(0 0,90% 0,100% 100%,0 100%);border-radius:9px 10px 0 0;background:#f6ddea}
+#bbe .bbe-folder-number{flex:0 0 auto;font-size:31px;line-height:1;font-weight:800;letter-spacing:-.05em}
+#bbe .bbe-folder-name{min-width:0;flex:1;font-size:14px;line-height:1.4;font-weight:700;word-break:keep-all}
+#bbe .bbe-folder-arrow{display:grid;place-items:center;flex:0 0 29px;height:29px;border:1px solid #fff9;border-radius:50%;background:#ffffff66;font-size:21px;line-height:1;transition:transform .2s ease}
+#bbe .bbe-folder-toggle:hover .bbe-photo{transform:translateY(-7px) rotate(0)}
+#bbe .bbe-folder-toggle:active{transform:translateY(1px)}
+#bbe .bbe-folder-toggle[aria-expanded=true] .bbe-folder-arrow{transform:rotate(180deg)}
+#bbe .bbe-folder-toggle[aria-expanded=true] .bbe-folder-cover{transform:translateY(4px)}
+#bbe .bbe-folders figure:nth-of-type(2) .bbe-folder-back{background:#dcd7e9}
+#bbe .bbe-folders figure:nth-of-type(2) .bbe-folder-cover{background:linear-gradient(150deg,#eeebf8,#d6cfe8);color:#40364f}
+#bbe .bbe-folders figure:nth-of-type(2) .bbe-folder-cover::before{background:#eeebf8}
+#bbe .bbe-folder-panel{margin-top:12px;padding:7px;border:1px solid #ffffffeb;border-radius:14px;background:#fff9;box-shadow:0 7px 16px #72506812}
+#bbe .bbe-folder-panel .bbe-photo{aspect-ratio:16/10;border-radius:9px}
+#bbe .bbe-folder-panel img{object-position:center!important}
+#bbe .bbe-folder-panel figcaption{padding:9px 7px 3px;background:none;color:#5c4a57;font-size:13px;line-height:1.4}
+#bbe .bbe-location{min-width:0;overflow:hidden;border:1px solid #ffffffed;border-radius:20px;background:#fffafc;box-shadow:0 5px 14px #51374712}
+#bbe .bbe-location-head{position:relative;padding:22px 24px 20px;background:radial-gradient(ellipse at 100% 0,#f9ddeb,transparent 72%),linear-gradient(140deg,#fff,#fcf2f7)}
+#bbe .bbe-transit{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#6d5b69}
+#bbe .bbe-transit i{width:19px;height:19px;display:grid;place-items:center;border-radius:50%;font:700 11px/1 Arial;color:#fff;background:#26a55c;font-style:normal}
+#bbe .bbe-transit i+i{background:#b46c2e}
+#bbe .bbe-location h3{margin:12px 0 0;color:#413740;font-weight:800;font-size:clamp(26px,3vw,40px);line-height:1.14;letter-spacing:-.04em}
+#bbe .bbe-location-station{display:block;margin-bottom:10px}
+#bbe .bbe-cube-scene{--cube-h:64px;--cube-depth:32px;display:block;position:relative;width:100%;height:var(--cube-h);perspective:800px}
+#bbe .bbe-cube{position:absolute;inset:0;transform-style:preserve-3d;transform:translateZ(calc(-1 * var(--cube-depth)));animation:bbe-cube-roll 8s cubic-bezier(.65,0,.25,1) infinite;animation-play-state:paused}
+#bbe[data-view=clinic][open] .bbe-cube{animation-play-state:running}
+#bbe .bbe-cube-face{position:absolute;inset:0;display:flex;align-items:center;padding:0 18px;border:1px solid #e3c4d7;border-radius:9px;backface-visibility:hidden;color:#493547;font-size:clamp(25px,2.7vw,37px);white-space:nowrap;background:linear-gradient(150deg,#fae9f2,#ebbed6);box-shadow:inset 0 1px 1px #fff;line-height:1.2;letter-spacing:-.04em}
+#bbe .bbe-cube-face:nth-child(1){transform:translateZ(var(--cube-depth))}
+#bbe .bbe-cube-face:nth-child(2){transform:rotateX(90deg) translateZ(var(--cube-depth));background:linear-gradient(150deg,#594154,#362b3c);color:#fff;border-color:#796070}
+#bbe .bbe-cube-face:nth-child(3){transform:rotateX(180deg) translateZ(var(--cube-depth))}
+#bbe .bbe-cube-face:nth-child(4){transform:rotateX(270deg) translateZ(var(--cube-depth));background:linear-gradient(150deg,#594154,#362b3c);color:#fff;border-color:#796070}
+@keyframes bbe-cube-roll{0%,20%{transform:translateZ(calc(-1 * var(--cube-depth))) rotateX(0)}25%,45%{transform:translateZ(calc(-1 * var(--cube-depth))) rotateX(-90deg)}50%,70%{transform:translateZ(calc(-1 * var(--cube-depth))) rotateX(-180deg)}75%,95%{transform:translateZ(calc(-1 * var(--cube-depth))) rotateX(-270deg)}100%{transform:translateZ(calc(-1 * var(--cube-depth))) rotateX(-360deg)}}
+#bbe .bbe-map{position:relative;height:254px;background:#f2eee9;border-block:1px solid #efe5eb}
+#bbe .bbe-map iframe{display:block;width:100%;height:100%;border:0;background:#f3f0eb}
+#bbe .bbe-location-foot{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+#bbe .bbe-location-address{margin:0;font-size:13px;line-height:1.65;color:#625360;word-break:keep-all}
+#bbe .bbe-location-link{display:flex;align-items:center;gap:12px;flex:0 0 auto;border:1px solid #e9d5e0;border-radius:999px;padding:9px 12px;background:#fff;color:#54404f;font-size:12px;font-weight:700;box-shadow:0 2px 5px #7250680d}
+#bbe .bbe-location-link:hover{background:#f9e9f1}
+@media(min-width:951px){#bbe .bbe-folder-toggle{height:216px}#bbe .bbe-folder-toggle .bbe-photo{height:174px}#bbe .bbe-folder-cover{top:122px}}
+@media(min-width:701px) and (max-width:950px){#bbe .bbe-interior{gap:12px;padding:4px 14px 16px}#bbe .bbe-folders{padding:12px}#bbe .bbe-folder-cover{padding:12px;gap:8px}#bbe .bbe-folder-name{font-size:12px}#bbe .bbe-location-head{padding:20px 16px}#bbe .bbe-location-foot{align-items:flex-start;flex-direction:column;gap:8px}}
+@media(max-width:700px){#bbe[data-view=clinic]{width:min(440px,calc(100vw - 24px));min-width:0}#bbe .bbe-interior{grid-template-columns:1fr;padding:4px 10px 14px;gap:14px}#bbe .bbe-folders{padding:14px}#bbe .bbe-folder-heading strong{font-size:16px}#bbe .bbe-folder-hint{font-size:11px}#bbe .bbe-folder-toggle{height:145px}#bbe .bbe-folder-toggle .bbe-photo{height:106px}#bbe .bbe-folder-cover{top:78px;padding:13px;gap:9px}#bbe .bbe-folder-number{font-size:28px}#bbe .bbe-folder-name{font-size:12px}#bbe .bbe-location-head{padding:20px}#bbe .bbe-location h3{font-size:29px}#bbe .bbe-cube-scene{--cube-h:56px;--cube-depth:28px}#bbe .bbe-cube-face{font-size:28px;padding:0 13px}#bbe .bbe-location-foot{padding:14px;align-items:flex-start;flex-direction:column;gap:10px}#bbe .bbe-map{height:250px}}
+@media(prefers-reduced-motion:reduce){#bbe .bbe-cube{animation:none!important}#bbe .bbe-folder-toggle .bbe-photo,#bbe .bbe-folder-cover,#bbe .bbe-folder-arrow{transition:none}#bbe .bbe-folder-toggle:hover .bbe-photo{transform:none}}
+@media(max-width:700px){#bbe .bbe-folder-heading{flex-wrap:wrap;gap:3px 12px}#bbe:lang(en) .bbe-cube-face,#bbe:lang(th) .bbe-cube-face{font-size:23px}}
+
 </style>
 <script>
 window.BBPopupConfig={"country":"HK"};
 (function(){
  'use strict';
  if(window.BBEvents)return;
- const countries={"KO":{"origin":"https://beautyblossom.kr","paths":["/20","/promotion","/22"],"boards":["post_card_b20250122f9a2883187db9","post_card_b20260923150b9c72c76c4","post_card_b20250122d2334b98253e7"],"lang":"ko","name":"한국","tabs":["공지사항","프로모션","이벤트","병원소개"],"heading":"뷰티블라썸 소식","loading":"소식을 불러오는 중입니다.","empty":"등록된 소식이 없습니다.","error":"소식을 불러오지 못했습니다.","view":"게시판 보기","retry":"다시 시도","close":"닫기","hide":"오늘 하루 보지 않기","pause":"자동 전환 일시정지","play":"자동 전환 재생","prev":"이전","next":"다음","imageError":"이미지를 불러오지 못했습니다. 상세 보기","floors":["6층 · 로비 & 라운지","8층 · 프리미엄 라운지"],"photoError":"사진을 불러오지 못했습니다."},"EN":{"origin":"https://en.beautyblossom.kr","paths":["/20","/promotion","/22"],"boards":["post_card_b20250228813f92088c757","post_card_b20260923743f6d6a9651e","post_card_b20250228fdc08f802b94a"],"lang":"en","name":"English","tabs":["Notices","Promotions","Events","Our clinic"],"heading":"Beauty Blossom news","loading":"Loading updates…","empty":"No updates at the moment.","error":"Updates could not be loaded.","view":"View all posts","retry":"Try again","close":"Close","hide":"Do not show again today","pause":"Pause slideshow","play":"Play slideshow","prev":"Previous","next":"Next","imageError":"Image unavailable. View details","floors":["6F · Lobby & lounge","8F · Premium lounge"],"photoError":"Photo unavailable."},"JP":{"origin":"https://jp.beautyblossom.kr","paths":["/20","/promotion","/22"],"boards":["post_card_b2025030496e991b5ee2c9","post_card_b202609231965f9b862b08","post_card_b2025030490b1c7dacdb70"],"lang":"ja","name":"日本語","tabs":["お知らせ","キャンペーン","イベント","院内紹介"],"heading":"ビューティーブロッサムからのお知らせ","loading":"読み込み中です。","empty":"現在、お知らせはありません。","error":"お知らせを読み込めませんでした。","view":"一覧を見る","retry":"再読み込み","close":"閉じる","hide":"今日は表示しない","pause":"自動切り替えを一時停止","play":"自動切り替えを再生","prev":"前へ","next":"次へ","imageError":"画像を読み込めませんでした。詳細を見る","floors":["6階 · ロビー＆ラウンジ","8階 · プレミアムラウンジ"],"photoError":"写真を読み込めませんでした。"},"CN":{"origin":"https://cn.beautyblossom.kr","paths":["/20","/promotion","/22"],"boards":["post_card_b20250306fa888d281fd48","post_card_b202609234541b46367367","post_card_b2025030620211496efbdf"],"lang":"zh-Hans","name":"简体中文","tabs":["公告","精选优惠","优惠活动","院内环境"],"heading":"丽朵皮肤科最新资讯","loading":"正在加载资讯…","empty":"暂无资讯。","error":"资讯加载失败。","view":"查看全部","retry":"重试","close":"关闭","hide":"今日不再显示","pause":"暂停自动切换","play":"播放自动切换","prev":"上一组","next":"下一组","imageError":"图片加载失败，查看详情","floors":["6楼 · 接待大厅与休息区","8楼 · 尊享休息区"],"photoError":"照片加载失败。"},"TW":{"origin":"https://tw.beautyblossom.kr","paths":["/20","/promotion","/22"],"boards":["post_card_b20251210f4b62e3ab6375","post_card_b20260923833fe2dd209ab","post_card_b2025121077f8c9740c448"],"lang":"zh-Hant-TW","name":"台灣","tabs":["公告事項","限定活動","精選活動","診所介紹"],"heading":"麗朵皮膚科最新消息","loading":"正在載入消息…","empty":"目前沒有新消息。","error":"無法載入消息。","view":"查看全部","retry":"重試","close":"關閉","hide":"今天不再顯示","pause":"暫停自動切換","play":"播放自動切換","prev":"上一組","next":"下一組","imageError":"無法載入圖片，查看詳情","floors":["6樓 · 接待大廳與休息區","8樓 · 尊榮休息區"],"photoError":"無法載入照片。"},"TH":{"origin":"https://www.beautyblossomth.kr","paths":["/notice/","/promotion/","/events/"],"boards":["post_card_b20250122f9a2883187db9","bb-promotions","post_card_b20250228fdc08f802b94a"],"lang":"th","name":"ไทย","tabs":["ประกาศ","โปรโมชั่น","กิจกรรม","แนะนำคลินิก"],"heading":"ข่าวสาร Beauty Blossom","loading":"กำลังโหลดข่าวสาร…","empty":"ยังไม่มีข่าวสารในขณะนี้","error":"ไม่สามารถโหลดข่าวสารได้","view":"ดูทั้งหมด","retry":"ลองอีกครั้ง","close":"ปิด","hide":"ไม่แสดงอีกในวันนี้","pause":"หยุดการเปลี่ยนภาพชั่วคราว","play":"เล่นภาพอัตโนมัติ","prev":"ก่อนหน้า","next":"ถัดไป","imageError":"ไม่สามารถโหลดรูปภาพได้ ดูรายละเอียด","floors":["ชั้น 6 · ล็อบบี้และเลานจ์","ชั้น 8 · พรีเมียมเลานจ์"],"photoError":"ไม่สามารถโหลดรูปภาพได้"},"HK":{"origin":"https://hk.beautyblossom.kr","paths":["/notice","/promotion","/events"],"boards":[],"lang":"zh-Hant-HK","name":"香港","tabs":["公告事項","精選優惠","最新活動","診所介紹"],"heading":"Beauty Blossom 最新消息","loading":"正在載入消息…","empty":"暫時沒有新消息。","error":"未能載入消息。","view":"查看全部","retry":"重試","close":"關閉","hide":"今天不再顯示","pause":"暫停自動切換","play":"播放自動切換","prev":"上一組","next":"下一組","imageError":"未能載入圖片，查看詳情","floors":["6樓 · 接待大堂及休息區","8樓 · 尊尚休息區"],"photoError":"未能載入相片。"}},options=window.BBPopupConfig||{},kinds=['notices','promotions','events'];
+ const countries={"KO":{"origin":"https://beautyblossom.kr","paths":["/20","/promotion","/22"],"boards":["post_card_b20250122f9a2883187db9","post_card_b20260923150b9c72c76c4","post_card_b20250122d2334b98253e7"],"lang":"ko","name":"한국","tabs":["공지사항","프로모션","이벤트","병원소개"],"heading":"뷰티블라썸 소식","loading":"소식을 불러오는 중입니다.","empty":"등록된 소식이 없습니다.","error":"소식을 불러오지 못했습니다.","view":"게시판 보기","retry":"다시 시도","close":"닫기","hide":"오늘 하루 보지 않기","pause":"자동 전환 일시정지","play":"자동 전환 재생","prev":"이전","next":"다음","imageError":"이미지를 불러오지 못했습니다. 상세 보기","floors":["6층 · 라운지 & 시술실","8층 · 프리미엄 라운지 & 시술실"],"photoError":"사진을 불러오지 못했습니다.","clinic":{"spaces":"우리의 공간","folderHint":"폴더를 눌러 둘러보세요","folderNames":["라운지 & 시술실","프리미엄 라운지 & 시술실"],"subway":"지하철 2·6호선","station":"합정역","exit":"3번 출구 앞","address":"서울 마포구 양화로 66 · 6층, 8층","directions":"오시는 길","mapTitle":"뷰티블라썸의원 카카오 지도"}},"EN":{"origin":"https://en.beautyblossom.kr","paths":["/20","/promotion","/22"],"boards":["post_card_b20250228813f92088c757","post_card_b20260923743f6d6a9651e","post_card_b20250228fdc08f802b94a"],"lang":"en","name":"English","tabs":["Notices","Promotions","Events","Our clinic"],"heading":"Beauty Blossom news","loading":"Loading updates…","empty":"No updates at the moment.","error":"Updates could not be loaded.","view":"View all posts","retry":"Try again","close":"Close","hide":"Do not show again today","pause":"Pause slideshow","play":"Play slideshow","prev":"Previous","next":"Next","imageError":"Image unavailable. View details","floors":["6F · Lounge & treatment rooms","8F · Premium lounge & treatment rooms"],"photoError":"Photo unavailable.","clinic":{"spaces":"Our spaces","folderHint":"Open a folder to explore","folderNames":["Lounge & treatment rooms","Premium lounge & treatment rooms"],"subway":"Subway Lines 2 & 6","station":"Hapjeong Station","exit":"In front of Exit 3","address":"66 Yanghwa-ro, Mapo-gu, Seoul · 6F & 8F","directions":"Directions","mapTitle":"Beauty Blossom Clinic map"}},"JP":{"origin":"https://jp.beautyblossom.kr","paths":["/20","/promotion","/22"],"boards":["post_card_b2025030496e991b5ee2c9","post_card_b202609231965f9b862b08","post_card_b2025030490b1c7dacdb70"],"lang":"ja","name":"日本語","tabs":["お知らせ","キャンペーン","イベント","院内紹介"],"heading":"ビューティーブロッサムからのお知らせ","loading":"読み込み中です。","empty":"現在、お知らせはありません。","error":"お知らせを読み込めませんでした。","view":"一覧を見る","retry":"再読み込み","close":"閉じる","hide":"今日は表示しない","pause":"自動切り替えを一時停止","play":"自動切り替えを再生","prev":"前へ","next":"次へ","imageError":"画像を読み込めませんでした。詳細を見る","floors":["6階 · ラウンジ＆施術室","8階 · プレミアムラウンジ＆施術室"],"photoError":"写真を読み込めませんでした。","clinic":{"spaces":"院内のご案内","folderHint":"フォルダをタップして見る","folderNames":["ラウンジ＆施術室","プレミアムラウンジ＆施術室"],"subway":"地下鉄2・6号線","station":"合井駅","exit":"3番出口の目の前","address":"ソウル市麻浦区楊花路66 · 6階・8階","directions":"アクセス","mapTitle":"ビューティーブロッサムの地図"}},"CN":{"origin":"https://cn.beautyblossom.kr","paths":["/20","/promotion","/22"],"boards":["post_card_b20250306fa888d281fd48","post_card_b202609234541b46367367","post_card_b2025030620211496efbdf"],"lang":"zh-Hans","name":"简体中文","tabs":["公告","精选优惠","优惠活动","院内环境"],"heading":"丽朵皮肤科最新资讯","loading":"正在加载资讯…","empty":"暂无资讯。","error":"资讯加载失败。","view":"查看全部","retry":"重试","close":"关闭","hide":"今日不再显示","pause":"暂停自动切换","play":"播放自动切换","prev":"上一组","next":"下一组","imageError":"图片加载失败，查看详情","floors":["6楼 · 休息区与治疗室","8楼 · 尊享休息区与治疗室"],"photoError":"照片加载失败。","clinic":{"spaces":"院内空间","folderHint":"点击文件夹查看","folderNames":["休息区与治疗室","尊享休息区与治疗室"],"subway":"地铁2、6号线","station":"合井站","exit":"3号出口正前方","address":"首尔麻浦区杨花路66号 · 6楼、8楼","directions":"交通指南","mapTitle":"丽朵皮肤科地图"}},"TW":{"origin":"https://tw.beautyblossom.kr","paths":["/20","/promotion","/22"],"boards":["post_card_b20251210f4b62e3ab6375","post_card_b20260923833fe2dd209ab","post_card_b2025121077f8c9740c448"],"lang":"zh-Hant-TW","name":"台灣","tabs":["公告事項","限定活動","精選活動","診所介紹"],"heading":"麗朵皮膚科最新消息","loading":"正在載入消息…","empty":"目前沒有新消息。","error":"無法載入消息。","view":"查看全部","retry":"重試","close":"關閉","hide":"今天不再顯示","pause":"暫停自動切換","play":"播放自動切換","prev":"上一組","next":"下一組","imageError":"無法載入圖片，查看詳情","floors":["6樓 · 休息區與療程室","8樓 · 尊榮休息區與療程室"],"photoError":"無法載入照片。","clinic":{"spaces":"診所空間","folderHint":"點選資料夾查看","folderNames":["休息區與療程室","尊榮休息區與療程室"],"subway":"地鐵2、6號線","station":"合井站","exit":"3號出口正前方","address":"首爾麻浦區楊花路66號 · 6樓、8樓","directions":"交通資訊","mapTitle":"麗朵皮膚科地圖"}},"TH":{"origin":"https://www.beautyblossomth.kr","paths":["/notice/","/promotion/","/events/"],"boards":["post_card_b20250122f9a2883187db9","bb-promotions","post_card_b20250228fdc08f802b94a"],"lang":"th","name":"ไทย","tabs":["ประกาศ","โปรโมชั่น","กิจกรรม","แนะนำคลินิก"],"heading":"ข่าวสาร Beauty Blossom","loading":"กำลังโหลดข่าวสาร…","empty":"ยังไม่มีข่าวสารในขณะนี้","error":"ไม่สามารถโหลดข่าวสารได้","view":"ดูทั้งหมด","retry":"ลองอีกครั้ง","close":"ปิด","hide":"ไม่แสดงอีกในวันนี้","pause":"หยุดการเปลี่ยนภาพชั่วคราว","play":"เล่นภาพอัตโนมัติ","prev":"ก่อนหน้า","next":"ถัดไป","imageError":"ไม่สามารถโหลดรูปภาพได้ ดูรายละเอียด","floors":["ชั้น 6 · เลานจ์และห้องทรีตเมนต์","ชั้น 8 · พรีเมียมเลานจ์และห้องทรีตเมนต์"],"photoError":"ไม่สามารถโหลดรูปภาพได้","clinic":{"spaces":"บรรยากาศคลินิก","folderHint":"แตะโฟลเดอร์เพื่อชม","folderNames":["เลานจ์และห้องทรีตเมนต์","พรีเมียมเลานจ์และห้องทรีตเมนต์"],"subway":"รถไฟใต้ดินสาย 2 และ 6","station":"สถานีฮับจอง","exit":"หน้าทางออก 3","address":"66 ถนนยางฮวา เขตมาโพ โซล · ชั้น 6 และ 8","directions":"การเดินทาง","mapTitle":"แผนที่คลินิก Beauty Blossom"}},"HK":{"origin":"https://hk.beautyblossom.kr","paths":["/notice","/promotion","/events"],"boards":[],"lang":"zh-Hant-HK","name":"香港","tabs":["公告事項","精選優惠","最新活動","診所介紹"],"heading":"Beauty Blossom 最新消息","loading":"正在載入消息…","empty":"暫時沒有新消息。","error":"未能載入消息。","view":"查看全部","retry":"重試","close":"關閉","hide":"今天不再顯示","pause":"暫停自動切換","play":"播放自動切換","prev":"上一組","next":"下一組","imageError":"未能載入圖片，查看詳情","floors":["6樓 · 休息區及療程室","8樓 · 尊尚休息區及療程室"],"photoError":"未能載入相片。","clinic":{"spaces":"診所環境","folderHint":"按資料夾瀏覽","folderNames":["休息區及療程室","尊尚休息區及療程室"],"subway":"地鐵2、6號線","station":"合井站","exit":"3號出口正前方","address":"首爾麻浦區楊花路66號 · 6樓、8樓","directions":"交通指南","mapTitle":"麗朵皮膚科地圖"}}},options=window.BBPopupConfig||{},kinds=['notices','promotions','events'];
  const endpoint=options.feedBase||'https://beautyblossom-popup-feed.beautyblossom.workers.dev';
  const assets=options.assetsBase||'https://byeonghoyoo.github.io/beautyblossom-popup-demo-20260922/assets/interior/';
  let country=Object.hasOwn(countries,options.country)?options.country:Object.keys(countries).find(k=>countries[k].origin===location.origin)||'KO';
@@ -84,7 +172,7 @@ window.BBPopupConfig={"country":"HK"};
  let items=[],cards=[],index=0,active=2,generation=0,request,timer,refreshTimer,busy=false,focusBefore,overflow,locked=false;
  const mobile=matchMedia('(max-width:700px)'),reduced=matchMedia('(prefers-reduced-motion:reduce)');
  let paused=reduced.matches;
- const preloads=new Map(),feeds=new Map(),pendingFeeds=new Map(),photos=[['6f-lounge.webp','6f-reception.webp','6f-lobby.webp'],['8f-reception.webp','8f-lounge.webp','8f-coffee.webp']];
+ const preloads=new Map(),feeds=new Map(),pendingFeeds=new Map(),photos=[['6f-lounge.webp','6f-treatment-room.webp','6f-reception.webp','6f-lobby.webp'],['8f-reception.webp','8f-treatment-room.webp','8f-lounge.webp','8f-coffee.webp']];
  const text=()=>countries[country],size=()=>mobile.matches?1:3,pages=()=>Math.ceil(items.length/size());
  const source=()=>text().origin+text().paths[active];
  const node=(tag,cls,value)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(value!==undefined)e.textContent=value;return e;};
@@ -92,7 +180,7 @@ window.BBPopupConfig={"country":"HK"};
  function stop(){clearTimeout(timer);timer=null;}
  function invalidate(){stop();generation++;busy=false;request=null;}
  function abortFeeds(){pendingFeeds.forEach(entry=>entry.controller.abort());pendingFeeds.clear();}
- function schedule(){stop();if(!dialog?.open||paused||document.hidden||busy)return;if(active===3)timer=setTimeout(advanceInterior,1000);else if(pages()>1)timer=setTimeout(()=>show(index+1),1800);}
+ function schedule(){stop();if(!dialog?.open||paused||document.hidden||busy)return;if(active===3)timer=setTimeout(advanceInterior,1500);else if(pages()>1)timer=setTimeout(()=>show(index+1),1800);}
  function pause(value){paused=value;schedule();}
  function imageOK(url,priority='low'){
   if(!url)return Promise.resolve(false);
@@ -102,7 +190,7 @@ window.BBPopupConfig={"country":"HK"};
    entry.promise=new Promise(resolve=>{const im=new Image();let settled=false;
     const done=value=>{if(settled)return;settled=true;clearTimeout(t);entry.ready=value;if(!value&&preloads.get(url)===entry)preloads.delete(url);resolve(value);};
     const t=setTimeout(()=>done(false),8000);im.decoding='async';im.fetchPriority=priority;
-    im.onload=()=>{if(!im.naturalWidth){done(false);return;}if(im.decode)im.decode().then(()=>done(true),()=>done(true));else done(true);};im.onerror=()=>done(false);im.src=url;
+    im.onload=()=>done(im.naturalWidth>0);im.onerror=()=>done(false);im.src=url;
    });
   }
   return preloads.get(url).promise;
@@ -113,8 +201,8 @@ window.BBPopupConfig={"country":"HK"};
   interior.querySelectorAll('figure').forEach((figure,i)=>{
    const target=(Number(figure.dataset.photo||0)+1)%photos[i].length,url=assets+photos[i][target];
    if(!preloads.get(url)?.ready){imageOK(url);return;}
-   const imgs=figure.querySelectorAll('img'),current=Number(figure.dataset.layer||0),incoming=imgs[1-current];
-   incoming.src=url;incoming.alt=text().floors[i];imgs[current].alt='';incoming.classList.add('bbe-shown');imgs[current].classList.remove('bbe-shown');
+   const current=Number(figure.dataset.layer||0);
+   figure.querySelectorAll('.bbe-photo').forEach(frame=>{const imgs=frame.querySelectorAll('img'),incoming=imgs[1-current];incoming.src=url;incoming.alt=text().floors[i];imgs[current].alt='';incoming.classList.add('bbe-shown');imgs[current].classList.remove('bbe-shown');});
    figure.dataset.photo=String(target);figure.dataset.layer=String(1-current);
   });schedule();
  }
@@ -125,7 +213,7 @@ window.BBPopupConfig={"country":"HK"};
   warmInterior();
  }
  function syncView(){
-  const live=active<3;stage.hidden=!live||!items.length;state.hidden=!live||!!items.length;interior.hidden=live;pager.hidden=!live||!items.length;
+  const live=active<3;dialog.dataset.view=live?'news':'clinic';stage.hidden=!live||!items.length;state.hidden=!live||!!items.length;interior.hidden=live;pager.hidden=!live||!items.length;
   prev.disabled=next.disabled=pages()<2;
   count.textContent=items.length?`${index*size()+1}–${Math.min((index+1)*size(),items.length)} / ${items.length}`:'';
   tabButtons.forEach((b,i)=>{b.setAttribute('aria-selected',String(i===active));b.tabIndex=i===active?0:-1;});
@@ -133,7 +221,19 @@ window.BBPopupConfig={"country":"HK"};
   stage.setAttribute('aria-labelledby',`bbe-tab-${active}`);state.setAttribute('aria-labelledby',`bbe-tab-${active}`);
  }
  function message(key,link=false){
-  state.replaceChildren(node('p','',text()[key]));
+  state.classList.toggle('bbe-loading',key==='loading');
+  state.replaceChildren();
+  if(key==='loading'){
+   state.append(node('span','bbe-sr-only',text().loading));
+   const grid=node('div','bbe-loading-grid');grid.setAttribute('aria-hidden','true');
+   for(let i=0;i<3;i++){
+    const card=node('div','bbe-loading-card'),image=node('div','bbe-loading-image'),caption=node('div','bbe-loading-caption');
+    card.style.setProperty('--bbe-delay',`${i*.12}s`);image.append(node('span','bbe-loading-brand','BEAUTY:BLOSSOM'));
+    caption.append(node('span'),node('span'));card.append(image,caption);grid.append(card);
+   }
+   state.append(grid,node('div','bbe-loading-pager'));return;
+  }
+  state.append(node('p','',text()[key]));
   if(link){const a=node('a','',text().view);a.href=source();a.target='_blank';a.rel='noopener';state.append(a);}
   if(key==='error')state.append(button(text().retry,'bbe-retry','',()=>refresh()));
  }
@@ -143,14 +243,52 @@ window.BBPopupConfig={"country":"HK"};
   closeButtons.forEach(b=>{b.setAttribute('aria-label',text().close);b.title=text().close;if(b.className!=='bbe-icon')b.textContent=text().close;});
   hideButton.textContent=text().hide;prev.setAttribute('aria-label',text().prev);next.setAttribute('aria-label',text().next);
   if(countrySelect)countrySelect.value=country;
-  interior.querySelectorAll('figure').forEach((f,i)=>{f.querySelector('figcaption').textContent=text().floors[i];f.querySelectorAll('img').forEach(img=>{img.alt=img.classList.contains('bbe-shown')?text().floors[i]:'';});f.querySelector('.bbe-photo-error').textContent=text().photoError;});
+  interior.querySelectorAll('figure').forEach((f,i)=>{f.querySelector('figcaption').textContent=text().floors[i];f.querySelectorAll('img').forEach(img=>{img.alt=img.classList.contains('bbe-shown')?text().floors[i]:'';});f.querySelectorAll('.bbe-photo-error').forEach(e=>e.textContent=text().photoError);});
  }
+ function toggleFolder(index){
+  const figures=[...interior.querySelectorAll('.bbe-folders>figure')],opening=figures[index].querySelector('.bbe-folder-toggle').getAttribute('aria-expanded')!=='true';
+  figures.forEach((f,i)=>{const open=opening&&i===index,b=f.querySelector('.bbe-folder-toggle'),panel=f.querySelector('.bbe-folder-panel');b.setAttribute('aria-expanded',String(open));panel.hidden=!open;if(open&&!reduced.matches&&panel.animate)panel.animate([{opacity:0,transform:'translateY(-8px)'},{opacity:1,transform:'translateY(0)'}],{duration:220,easing:'cubic-bezier(.16,1,.3,1)'});});
+ }
+ function photoFrame(files){
+  const frame=node('div','bbe-photo'),error=node('span','bbe-photo-error');error.hidden=true;
+  for(let i=0;i<2;i++){const img=node('img');img.width=1200;img.height=800;img.loading='eager';img.decoding='async';if(i===0){img.src=assets+files[0];img.className='bbe-shown';}img.addEventListener('error',()=>{if(img.classList.contains('bbe-shown'))error.hidden=false;});img.addEventListener('load',()=>{error.hidden=true;});frame.append(img);}
+  frame.append(error);return frame;
+ }
+ function buildClinic(){
+  const folders=node('div','bbe-folders'),heading=node('div','bbe-folder-heading');heading.append(node('strong','bbe-folder-title'),node('span','bbe-folder-hint'));folders.append(heading);
+  photos.forEach((files,i)=>{
+   const f=node('figure');f.dataset.photo='0';f.dataset.layer='0';
+   const toggle=button('','bbe-folder-toggle','',()=>toggleFolder(i));toggle.id=`bbe-folder-${i}`;toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-controls',`bbe-folder-panel-${i}`);
+   const cover=node('span','bbe-folder-cover');cover.append(node('span','bbe-folder-number',i?'8F':'6F'),node('span','bbe-folder-name'),node('span','bbe-folder-arrow','⌄'));cover.querySelector('.bbe-folder-arrow').setAttribute('aria-hidden','true');
+   const peek=photoFrame(files);peek.setAttribute('aria-hidden','true');toggle.append(node('span','bbe-folder-back'),peek,cover);
+   const panel=node('div','bbe-folder-panel');panel.id=`bbe-folder-panel-${i}`;panel.hidden=true;panel.setAttribute('role','region');panel.setAttribute('aria-labelledby',toggle.id);panel.append(photoFrame(files),node('figcaption'));
+   f.append(toggle,panel);folders.append(f);
+  });
+  const locationCard=node('section','bbe-location'),head=node('div','bbe-location-head'),transit=node('div','bbe-transit');transit.append(node('i','','2'),node('i','','6'),node('span','bbe-transit-label'));
+  const h=node('h3');h.id='bbe-location-title';const station=node('span','bbe-location-station'),scene=node('span','bbe-cube-scene'),cube=node('span','bbe-cube');station.setAttribute('aria-hidden','true');scene.setAttribute('aria-hidden','true');
+  for(let i=0;i<4;i++)cube.append(node('span','bbe-cube-face'));scene.append(cube);h.append(station,scene);head.append(transit,h);
+  const map=node('div','bbe-map');const foot=node('div','bbe-location-foot'),address=node('p','bbe-location-address'),link=node('a','bbe-location-link');link.href='https://beautyblossom.kr/19';link.target='_blank';link.rel='noopener';foot.append(address,link);locationCard.setAttribute('aria-labelledby',h.id);locationCard.append(head,map,foot);interior.append(folders,locationCard);
+ }
+ function syncClinicLocale(){
+  const c=text().clinic;
+  interior.querySelector('.bbe-folder-title').textContent=c.spaces;interior.querySelector('.bbe-folder-hint').textContent=c.folderHint;
+  interior.querySelectorAll('.bbe-folders>figure').forEach((f,i)=>{f.querySelector('.bbe-folder-name').textContent=c.folderNames[i];f.querySelector('.bbe-folder-toggle').setAttribute('aria-label',text().floors[i]);});
+  interior.querySelector('.bbe-transit-label').textContent=c.subway;interior.querySelector('.bbe-location-station').textContent=c.station;interior.querySelectorAll('.bbe-cube-face').forEach(e=>e.textContent=c.exit);interior.querySelector('.bbe-location h3').setAttribute('aria-label',c.station+' '+c.exit);
+  interior.querySelector('.bbe-location-address').textContent=c.address;interior.querySelector('.bbe-location-link').textContent=c.directions+' ↗';
+  const frame=interior.querySelector('.bbe-map iframe');if(frame){frame.title=c.mapTitle;frame.lang=text().lang;}
+ }
+ function ensureClinicMap(){
+  const map=interior.querySelector('.bbe-map');if(map.firstElementChild)return;
+  const frame=node('iframe');frame.title=text().clinic.mapTitle;frame.lang=text().lang;frame.referrerPolicy='strict-origin-when-cross-origin';frame.src=options.mapUrl||'https://byeonghoyoo.github.io/beautyblossom-popup-demo-20260922/04-clinic-map.html';map.append(frame);
+ }
+
  function selectTab(value,focus=false){
   invalidate();active=(value+4)%4;items=[];index=0;paused=reduced.matches;syncView();
-  if(active<3){message('loading');refresh();}else{warmInterior();warmTabs();schedule();}
+  if(active<3){const cached=recentFeed(country,active);message('loading');if(cached){items=cached.items;if(items.length)show(0,true);else{message('empty',true);syncView();}}refresh(!!cached);}else{warmInterior();warmTabs();schedule();}
+  if(active===3)ensureClinicMap();
   if(focus)tabButtons[active].focus();
  }
- function setCountry(value){if(!Object.hasOwn(countries,value))return false;if(value===country)return true;invalidate();abortFeeds();country=value;if(dialog){applyLocale();selectTab(active);}return true;}
+ function setCountry(value){if(!Object.hasOwn(countries,value))return false;if(value===country)return true;invalidate();abortFeeds();country=value;if(dialog){applyLocale();syncClinicLocale();selectTab(active);}return true;}
  async function show(value,immediate=false){
   stop();if(!items.length||active===3)return;
   const token=++generation;busy=true;
@@ -158,13 +296,13 @@ window.BBPopupConfig={"country":"HK"};
   if(immediate)cards.forEach(card=>{card.querySelectorAll('img').forEach(img=>{img.classList.remove('bbe-shown');img.removeAttribute('src');});});
   const tasks=cards.map(async(card,i)=>{
    const item=row[i];card.classList.toggle('bbe-empty',!item);
-   if(!item){card.removeAttribute('href');card.tabIndex=-1;card.setAttribute('aria-hidden','true');return;}
-   if(immediate){card.href=item.href;card.tabIndex=0;card.removeAttribute('aria-hidden');card.setAttribute('aria-label',item.title||text().view);card.querySelector('.bbe-caption span').textContent=item.title;card.querySelector('.bbe-card-fallback').hidden=false;card.querySelector('.bbe-card-fallback').textContent=item.title||text().view;}
+   if(!item){card.classList.remove('bbe-pending');card.removeAttribute('href');card.tabIndex=-1;card.setAttribute('aria-hidden','true');return;}
+   if(immediate){card.href=item.href;card.tabIndex=0;card.removeAttribute('aria-hidden');card.setAttribute('aria-label',item.title||text().view);card.querySelector('.bbe-caption span').textContent=item.title;card.classList.toggle('bbe-pending',!!item.image);card.querySelector('.bbe-card-fallback').hidden=!!item.image;card.querySelector('.bbe-card-fallback').textContent=item.title||text().view;}
    const ready=await imageOK(item.image,'high');
    if(token!==generation||!dialog.open)return;
-   card.tabIndex=0;card.removeAttribute('aria-hidden');card.href=item.href;card.setAttribute('aria-label',item.title||text().view);
+   card.classList.remove('bbe-pending');card.tabIndex=0;card.removeAttribute('aria-hidden');card.href=item.href;card.setAttribute('aria-label',item.title||text().view);
    const imgs=card.querySelectorAll('img'),current=card.dataset.layer==='1'?1:0,incoming=imgs[1-current],outgoing=imgs[current];
-   incoming.alt=item.title;outgoing.alt='';incoming.style.transition=immediate?'none':'';outgoing.style.transition=immediate?'none':'';
+   incoming.alt=item.title;outgoing.alt='';incoming.style.transition=immediate?'opacity .22s ease-out':'';outgoing.style.transition=immediate?'none':'';
    if(ready)incoming.src=item.image;else incoming.removeAttribute('src');
    incoming.classList.toggle('bbe-shown',ready);outgoing.classList.remove('bbe-shown');card.dataset.layer=String(1-current);
    const fallback=card.querySelector('.bbe-card-fallback');fallback.hidden=ready;fallback.textContent=item.title||text().view;
@@ -187,18 +325,37 @@ window.BBPopupConfig={"country":"HK"};
    return true;
   }catch{return false;}
  }
+ function feedValid(data,selectedCountry,selectedTab){
+  return !!data&&data.country===selectedCountry&&data.kind===kinds[selectedTab]&&!data.truncated&&Array.isArray(data.items)&&data.items.every(item=>valid(item,selectedCountry,selectedTab));
+ }
+ const feedStorageKey=(selectedCountry,selectedTab)=>`bb-popup-feed-v1:${endpoint}:${selectedCountry}:${kinds[selectedTab]}`;
+ function recentFeed(selectedCountry,selectedTab){
+  const cached=feeds.get(selectedCountry+':'+selectedTab),now=Date.now();
+  if(cached&&now>=cached.at&&now-cached.at<30000)return cached.data;
+  try{
+   const key=feedStorageKey(selectedCountry,selectedTab),raw=sessionStorage.getItem(key);
+   if(!raw)return null;
+   if(raw.length<=250000){const saved=JSON.parse(raw);if(Number.isFinite(saved?.at)&&now>=saved.at&&now-saved.at<60000&&feedValid(saved.data,selectedCountry,selectedTab))return saved.data;}
+   sessionStorage.removeItem(key);
+  }catch{}
+  return null;
+ }
+ function rememberFeed(selectedCountry,selectedTab,data){
+  const saved={at:Date.now(),data};feeds.set(selectedCountry+':'+selectedTab,saved);
+  try{const raw=JSON.stringify(saved);if(raw.length<=250000)sessionStorage.setItem(feedStorageKey(selectedCountry,selectedTab),raw);}catch{}
+ }
  function getFeed(selectedCountry,selectedTab,force=false){
-  const key=selectedCountry+':'+selectedTab,cached=feeds.get(key);
-  if(!force&&cached&&Date.now()-cached.at<30000)return Promise.resolve(cached.data);
+  const key=selectedCountry+':'+selectedTab,cached=!force&&recentFeed(selectedCountry,selectedTab);
+  if(cached)return Promise.resolve(cached);
   if(pendingFeeds.has(key))return pendingFeeds.get(key).promise;
   const controller=new AbortController(),entry={controller};
   const timeout=setTimeout(()=>controller.abort(),25000);
   entry.promise=(async()=>{
    try{
-    const response=await fetch(`${endpoint}/${kinds[selectedTab]}?country=${selectedCountry}`,{signal:controller.signal,cache:'no-cache',credentials:'omit'});
+    const response=await fetch(`${endpoint}/${kinds[selectedTab]}?country=${selectedCountry}`,{signal:controller.signal,cache:force?'no-cache':'default',credentials:'omit'});
     if(!response.ok)throw new Error('feed');const data=await response.json();
-    if(controller.signal.aborted||data.country!==selectedCountry||data.kind!==kinds[selectedTab]||data.truncated||!Array.isArray(data.items)||!data.items.every(item=>valid(item,selectedCountry,selectedTab)))throw new Error('invalid_feed');
-    feeds.set(key,{at:Date.now(),data});return data;
+    if(controller.signal.aborted||!feedValid(data,selectedCountry,selectedTab))throw new Error('invalid_feed');
+    rememberFeed(selectedCountry,selectedTab,data);return data;
    }catch(error){if(pendingFeeds.get(key)===entry)feeds.delete(key);throw error;}
    finally{clearTimeout(timeout);if(pendingFeeds.get(key)===entry)pendingFeeds.delete(key);}
   })();pendingFeeds.set(key,entry);return entry.promise;
@@ -230,15 +387,13 @@ window.BBPopupConfig={"country":"HK"};
   state=node('div','bbe-state');state.setAttribute('role','status');
   stage=node('div','bbe-stage');stage.id='bbe-stage';stage.setAttribute('role','tabpanel');
   for(let i=0;i<3;i++){const card=node('a','bbe-card'),frame=node('div','bbe-image'),caption=node('div','bbe-caption');card.dataset.layer='0';card.target='_blank';card.rel='noopener';frame.append(node('span','bbe-card-fallback'),node('img'),node('img'));caption.append(node('span'));card.append(frame,caption);card.addEventListener('click',()=>pause(true));stage.append(card);cards.push(card);}
-  pager=node('div','bbe-pager');prev=button('‹','bbe-step','',()=>{pause(true);show(index-1);});next=button('›','bbe-step','',()=>{pause(true);show(index+1);});count=node('span');pager.append(prev,count,next);
+  pager=node('div','bbe-pager');prev=button('<','bbe-step','',()=>{pause(true);show(index-1);});next=button('>','bbe-step','',()=>{pause(true);show(index+1);});count=node('span');pager.append(prev,count,next);
   interior=node('div','bbe-interior');interior.id='bbe-interior';interior.setAttribute('role','tabpanel');interior.setAttribute('aria-labelledby','bbe-tab-3');
-  photos.forEach(files=>{const f=node('figure'),frame=node('div','bbe-photo'),error=node('span','bbe-photo-error');error.hidden=true;f.dataset.photo='0';f.dataset.layer='0';
-   for(let i=0;i<2;i++){const img=node('img');img.width=1200;img.height=900;img.loading='eager';img.decoding='async';if(i===0){img.src=assets+files[0];img.className='bbe-shown';}img.addEventListener('error',()=>{if(img.classList.contains('bbe-shown'))error.hidden=false;});img.addEventListener('load',()=>{error.hidden=true;});frame.append(img);}
-   frame.append(error);f.append(frame,node('figcaption'));interior.append(f);});
+  buildClinic();
   tabs=node('div','bbe-tabs');tabs.setAttribute('role','tablist');pill=node('span','bbe-pill');pill.setAttribute('aria-hidden','true');tabs.append(pill);
   for(let i=0;i<4;i++){const b=button('','bbe-tab','',()=>selectTab(i));b.id=`bbe-tab-${i}`;b.setAttribute('role','tab');b.setAttribute('aria-controls',i===3?'bbe-interior':'bbe-stage');b.addEventListener('keydown',e=>{let next;if(e.key==='ArrowRight')next=i+1;if(e.key==='ArrowLeft')next=i-1;if(e.key==='Home')next=0;if(e.key==='End')next=3;if(next!==undefined){e.preventDefault();selectTab(next,true);}});tabs.append(b);tabButtons.push(b);}
   const foot=node('footer','bbe-foot');hideButton=button('','','',hideToday);const closeFoot=button('','','',close);closeButtons.push(closeFoot);foot.append(hideButton,closeFoot);
-  dialog.append(head,preview,state,stage,interior,pager,tabs,foot);document.body.append(dialog);applyLocale();
+  dialog.append(head,preview,state,stage,interior,pager,tabs,foot);document.body.append(dialog);applyLocale();syncClinicLocale();
   dialog.addEventListener('cancel',e=>{e.preventDefault();close();});dialog.addEventListener('close',()=>{if(dialog.open)return;invalidate();abortFeeds();clearInterval(refreshTimer);restore();});
   dialog.addEventListener('click',e=>{if(e.target!==dialog)return;const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)close();});
   dialog.addEventListener('focusin',e=>{if(e.target.closest('.bbe-card'))pause(true);});
@@ -251,10 +406,9 @@ window.BBPopupConfig={"country":"HK"};
   try{if(respectHidden&&Number(localStorage.getItem(key()))>Date.now())return;}catch{}
   if(!dialog)build();if(dialog.open)return;
   focusBefore=document.activeElement;overflow=document.documentElement.style.overflow;dialog.showModal();locked=true;document.documentElement.style.overflow='hidden';
-  selectTab(2);clearInterval(refreshTimer);refreshTimer=setInterval(()=>{if(!document.hidden)refresh(true);},60000);
+  selectTab(options.preview&&options.startTab===3?3:2);clearInterval(refreshTimer);refreshTimer=setInterval(()=>{if(!document.hidden)refresh(true);},60000);
  }
  window.BBEvents=Object.freeze({open,close,setCountry});
  if(true)open(true);
 }());
-
 </script>
