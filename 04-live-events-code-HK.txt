@@ -60,6 +60,16 @@
 @media(prefers-reduced-transparency:reduce){#bbe{background:#fff5f9;backdrop-filter:none;-webkit-backdrop-filter:none}#bbe::backdrop{background:#43303f66}}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){#bbe{background:#fff5f9}}
 
+/* Larger editorial text; action labels and button geometry stay unchanged. */
+#bbe h2{min-width:0;font-size:36px;line-height:1.22;font-weight:800;word-break:keep-all}
+#bbe .bbe-head{padding-top:14px;padding-bottom:12px}
+#bbe .bbe-preview label{font-size:15px}
+#bbe .bbe-caption{height:66px;font-size:16px;line-height:24px}
+#bbe .bbe-pager>span{font-size:15px}
+#bbe .bbe-interior figcaption{font-size:18px;line-height:1.5}
+#bbe .bbe-state p,#bbe .bbe-state a,#bbe .bbe-photo-error{font-size:16px}
+@media(max-width:700px){#bbe h2{font-size:28px;line-height:1.25}#bbe .bbe-head{align-items:flex-start}#bbe .bbe-preview label{font-size:14px}#bbe .bbe-caption{height:60px;font-size:14px;line-height:21px}#bbe .bbe-pager>span{font-size:14px}#bbe .bbe-interior figcaption{font-size:16px}}
+
 </style>
 <script>
 window.BBPopupConfig={"country":"HK"};
