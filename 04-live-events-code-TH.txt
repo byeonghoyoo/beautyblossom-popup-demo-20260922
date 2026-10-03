@@ -139,17 +139,8 @@
 #bbe .bbe-transit{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#6d5b69}
 #bbe .bbe-transit i{width:19px;height:19px;display:grid;place-items:center;border-radius:50%;font:700 11px/1 Arial;color:#fff;background:#26a55c;font-style:normal}
 #bbe .bbe-transit i+i{background:#b46c2e}
-#bbe .bbe-location h3{margin:12px 0 0;color:#413740;font-weight:800;font-size:clamp(26px,3vw,40px);line-height:1.14;letter-spacing:-.04em}
+#bbe .bbe-location h3{margin:12px 0 0;color:#413740;font-family:"BBPopupSans","Apple SD Gothic Neo","Malgun Gothic",Arial,sans-serif;font-weight:400;font-size:clamp(26px,3vw,38px);line-height:1.4;letter-spacing:0;word-break:keep-all;overflow-wrap:anywhere}
 #bbe .bbe-location-station{display:block;margin-bottom:10px}
-#bbe .bbe-cube-scene{--cube-h:64px;--cube-depth:32px;display:block;position:relative;width:100%;height:var(--cube-h);perspective:800px}
-#bbe .bbe-cube{position:absolute;inset:0;transform-style:preserve-3d;transform:translateZ(calc(-1 * var(--cube-depth)));animation:bbe-cube-roll 8s cubic-bezier(.65,0,.25,1) infinite;animation-play-state:paused}
-#bbe[data-view=clinic][open] .bbe-cube{animation-play-state:running}
-#bbe .bbe-cube-face{position:absolute;inset:0;display:flex;align-items:center;padding:0 18px;border:1px solid #e3c4d7;border-radius:9px;backface-visibility:hidden;color:#493547;font-size:clamp(25px,2.7vw,37px);white-space:nowrap;background:linear-gradient(150deg,#fae9f2,#ebbed6);box-shadow:inset 0 1px 1px #fff;line-height:1.2;letter-spacing:-.04em}
-#bbe .bbe-cube-face:nth-child(1){transform:translateZ(var(--cube-depth))}
-#bbe .bbe-cube-face:nth-child(2){transform:rotateX(90deg) translateZ(var(--cube-depth));background:linear-gradient(150deg,#594154,#362b3c);color:#fff;border-color:#796070}
-#bbe .bbe-cube-face:nth-child(3){transform:rotateX(180deg) translateZ(var(--cube-depth))}
-#bbe .bbe-cube-face:nth-child(4){transform:rotateX(270deg) translateZ(var(--cube-depth));background:linear-gradient(150deg,#594154,#362b3c);color:#fff;border-color:#796070}
-@keyframes bbe-cube-roll{0%,20%{transform:translateZ(calc(-1 * var(--cube-depth))) rotateX(0)}25%,45%{transform:translateZ(calc(-1 * var(--cube-depth))) rotateX(-90deg)}50%,70%{transform:translateZ(calc(-1 * var(--cube-depth))) rotateX(-180deg)}75%,95%{transform:translateZ(calc(-1 * var(--cube-depth))) rotateX(-270deg)}100%{transform:translateZ(calc(-1 * var(--cube-depth))) rotateX(-360deg)}}
 #bbe .bbe-map{position:relative;flex:1 0 254px;min-height:254px;background:#f2eee9;border-block:1px solid #efe5eb}
 #bbe .bbe-map iframe{position:absolute;inset:0;display:block;width:100%;height:100%;border:0;background:#f3f0eb}
 #bbe .bbe-location-foot{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
@@ -158,9 +149,12 @@
 #bbe .bbe-location-link:hover{background:#f9e9f1}
 @media(min-width:951px){#bbe .bbe-folder-toggle{height:216px}#bbe .bbe-folder-toggle .bbe-photo{height:174px}#bbe .bbe-folder-cover{top:122px}}
 @media(min-width:701px) and (max-width:950px){#bbe .bbe-interior{gap:12px;padding:4px 14px 16px}#bbe .bbe-folders{padding:12px}#bbe .bbe-folder-cover{padding:12px;gap:8px}#bbe .bbe-folder-name{font-size:12px}#bbe .bbe-location-head{padding:20px 16px}#bbe .bbe-location-foot{align-items:flex-start;flex-direction:column;gap:8px}}
-@media(max-width:700px){#bbe[data-view=clinic]{width:min(440px,calc(100vw - 24px));min-width:0}#bbe .bbe-interior{grid-template-columns:1fr;padding:4px 10px 14px;gap:14px}#bbe .bbe-folders{padding:14px}#bbe .bbe-folder-heading strong{font-size:16px}#bbe .bbe-folder-hint{font-size:11px}#bbe .bbe-folder-toggle{height:145px}#bbe .bbe-folder-toggle .bbe-photo{height:106px}#bbe .bbe-folder-cover{top:78px;padding:13px;gap:9px}#bbe .bbe-folder-number{font-size:28px}#bbe .bbe-folder-name{font-size:12px}#bbe .bbe-location-head{padding:20px}#bbe .bbe-location h3{font-size:29px}#bbe .bbe-cube-scene{--cube-h:56px;--cube-depth:28px}#bbe .bbe-cube-face{font-size:28px;padding:0 13px}#bbe .bbe-location-foot{padding:14px;align-items:flex-start;flex-direction:column;gap:10px}#bbe .bbe-map{flex:0 0 250px;min-height:250px;height:250px}}
-@media(prefers-reduced-motion:reduce){#bbe .bbe-cube{animation:none!important}#bbe .bbe-folder-toggle .bbe-photo,#bbe .bbe-folder-cover,#bbe .bbe-folder-arrow,#bbe .bbe-folder-arrow::before{transition:none}#bbe .bbe-folder-toggle:hover .bbe-photo{transform:none}}
-@media(max-width:700px){#bbe .bbe-folder-heading{flex-wrap:wrap;gap:3px 12px}#bbe:lang(en) .bbe-cube-face,#bbe:lang(th) .bbe-cube-face{font-size:23px}}
+@media(max-width:700px){#bbe[data-view=clinic]{width:min(440px,calc(100vw - 24px));min-width:0}#bbe .bbe-interior{grid-template-columns:1fr;padding:4px 10px 14px;gap:14px}#bbe .bbe-folders{padding:14px}#bbe .bbe-folder-heading strong{font-size:16px}#bbe .bbe-folder-hint{font-size:11px}#bbe .bbe-folder-toggle{height:145px}#bbe .bbe-folder-toggle .bbe-photo{height:106px}#bbe .bbe-folder-cover{top:78px;padding:13px;gap:9px}#bbe .bbe-folder-number{font-size:28px}#bbe .bbe-folder-name{font-size:12px}#bbe .bbe-location-head{padding:20px}#bbe .bbe-location h3{font-size:29px}#bbe .bbe-location-foot{padding:14px;align-items:flex-start;flex-direction:column;gap:10px}#bbe .bbe-map{flex:0 0 250px;min-height:250px;height:250px}}
+@media(prefers-reduced-motion:reduce){#bbe .bbe-folder-toggle .bbe-photo,#bbe .bbe-folder-cover,#bbe .bbe-folder-arrow,#bbe .bbe-folder-arrow::before{transition:none}#bbe .bbe-folder-toggle:hover .bbe-photo{transform:none}}
+@media(max-width:700px){#bbe .bbe-folder-heading{flex-wrap:wrap;gap:3px 12px}}
+@font-face{font-family:"BBPopupSans";font-style:normal;font-weight:400;font-display:swap;src:url("https://byeonghoyoo.github.io/beautyblossom-popup-demo-20260922/assets/fonts/Pretendard-Regular.woff2") format("woff2")}
+#bbe .bbe-location-exit{display:block;font-size:clamp(25px,2.7vw,34px);line-height:1.45;color:#493547;font-weight:400;letter-spacing:0}
+@media(max-width:700px){#bbe .bbe-location h3{font-size:28px}#bbe .bbe-location-exit{font-size:26px}#bbe:lang(en) .bbe-location-exit,#bbe:lang(th) .bbe-location-exit{font-size:23px}}
 
 </style>
 <script>
@@ -270,15 +264,15 @@ window.BBPopupConfig={"country":"TH"};
    f.append(toggle,node('figcaption','bbe-sr-only'));folders.append(f);
   });
   const locationCard=node('section','bbe-location'),head=node('div','bbe-location-head'),transit=node('div','bbe-transit');transit.append(node('i','','2'),node('i','','6'),node('span','bbe-transit-label'));
-  const h=node('h3');h.id='bbe-location-title';const station=node('span','bbe-location-station'),scene=node('span','bbe-cube-scene'),cube=node('span','bbe-cube');station.setAttribute('aria-hidden','true');scene.setAttribute('aria-hidden','true');
-  for(let i=0;i<4;i++)cube.append(node('span','bbe-cube-face'));scene.append(cube);h.append(station,scene);head.append(transit,h);
+  const h=node('h3');h.id='bbe-location-title';const station=node('span','bbe-location-station'),exit=node('span','bbe-location-exit');
+  h.append(station,exit);head.append(transit,h);
   const map=node('div','bbe-map');const foot=node('div','bbe-location-foot'),address=node('p','bbe-location-address'),link=node('a','bbe-location-link');link.href='https://beautyblossom.kr/19';link.target='_blank';link.rel='noopener';foot.append(address,link);locationCard.setAttribute('aria-labelledby',h.id);locationCard.append(head,map,foot);interior.append(folders,locationCard);
  }
  function syncClinicLocale(){
   const c=text().clinic;
   interior.querySelector('.bbe-folder-title').textContent=c.spaces;interior.querySelector('.bbe-folder-hint').textContent=c.folderHint;
   interior.querySelectorAll('.bbe-folders>figure').forEach((f,i)=>{f.querySelector('.bbe-folder-name').textContent=c.folderNames[i];f.querySelector('.bbe-folder-toggle').setAttribute('aria-label',text().floors[i]);});
-  interior.querySelector('.bbe-transit-label').textContent=c.subway;interior.querySelector('.bbe-location-station').textContent=c.station;interior.querySelectorAll('.bbe-cube-face').forEach(e=>e.textContent=c.exit);interior.querySelector('.bbe-location h3').setAttribute('aria-label',c.station+' '+c.exit);
+  interior.querySelector('.bbe-transit-label').textContent=c.subway;interior.querySelector('.bbe-location-station').textContent=c.station;interior.querySelector('.bbe-location-exit').textContent=c.exit;
   interior.querySelector('.bbe-location-address').textContent=c.address;interior.querySelector('.bbe-location-link').textContent=c.directions+' ↗';
   const frame=interior.querySelector('.bbe-map iframe');if(frame){frame.title=c.mapTitle;frame.lang=text().lang;}
  }
